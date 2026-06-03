@@ -27,7 +27,9 @@
         <button class="text-button" data-form="intent">I want to Intern</button>
         <button class="primary-button" data-form="shortlist">Request Shortlist</button>
       </div>
-      <button class="menu-button" id="menu-button" aria-label="Open menu">Menu</button>
+      <div class="mobile-menu-controls">
+        <button class="menu-button" id="menu-button" aria-label="Open menu" aria-expanded="false">Menu</button>
+      </div>
     </header>
 
     <main>
@@ -206,17 +208,45 @@
     </main>
 
     <footer class="footer">
-      <div>
+      <div class="footer-brand">
         <img src="assets/logo.jpeg" alt="UrgentRecruite logo">
         <p>The discreet bridge between elite talent and world-class organizations. Vetted, anonymous, and fast.</p>
       </div>
-      <nav>
-        <a href="#about">About Us</a>
-        <a href="#pricing">Pricing</a>
-        <a href="#faq">FAQ</a>
-        <a href="#contact">Contact</a>
-      </nav>
-      <span>100% Data Protection Compliant</span>
+      <div class="footer-column">
+        <h3>Platform</h3>
+        <nav>
+          <a href="#about">About Us</a>
+          <a href="#pricing">Pricing</a>
+          <a href="#faq">FAQ</a>
+          <a href="#contact">Contact</a>
+        </nav>
+      </div>
+      <div class="footer-column">
+        <h3>Operating markets</h3>
+        <div class="country-list" aria-label="Operating countries">
+          <span><span aria-hidden="true">🇳🇬</span> Nigeria</span>
+          <span><span aria-hidden="true">🇪🇸</span> Spain</span>
+          <span><span aria-hidden="true">🇵🇹</span> Portugal</span>
+        </div>
+        <span class="compliance-note">100% Data Protection Compliant</span>
+      </div>
+      <div class="footer-column">
+        <h3>Connect</h3>
+        <div class="social-links" aria-label="Social media links">
+          <a href="https://www.linkedin.com/company/urgentrecruite/" target="_blank" rel="noreferrer" aria-label="LinkedIn">
+            <img src="assets/social/linkedin.svg" alt="">
+          </a>
+          <a href="https://facebook.com" target="_blank" rel="noreferrer" aria-label="Facebook">
+            <img src="assets/social/facebook.svg" alt="">
+          </a>
+          <a href="https://instagram.com/urgentrecruite/" target="_blank" rel="noreferrer" aria-label="Instagram">
+            <img src="assets/social/instagram.svg" alt="">
+          </a>
+          <a href="https://tiktok.com/@urgentrecruite" target="_blank" rel="noreferrer" aria-label="TikTok">
+            <img src="assets/social/tiktok.svg" alt="">
+          </a>
+        </div>
+      </div>
     </footer>
 
     <dialog class="form-dialog" id="form-dialog">
@@ -255,6 +285,17 @@
           <label>Annual Gross Pay<input name="annualPay" placeholder="e.g. 50,000"></label>
           <label class="wide">Job Description<textarea name="jobDescription" placeholder="Describe the role, responsibilities and what your organisation offers..."></textarea></label>
           <label class="wide">Job Specification<textarea name="jobSpecification" placeholder="List required skills, qualifications, and experience..."></textarea></label>
+          <label class="wide">Upload Existing JD or Specification<input name="jobDocument" type="file" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg"></label>
+          <div class="wide generated-brief-panel">
+            <div class="generated-brief-header">
+              <div>
+                <span>AI vacancy brief</span>
+                <p>Generate a professional job description and specification from the information above.</p>
+              </div>
+              <button class="secondary-button" type="button" id="generate-brief">Generate JD</button>
+            </div>
+            <label>Generated Job Description and Specification<textarea name="generatedBrief" id="generated-brief" placeholder="Generated JD and specification will appear here after you click Generate JD."></textarea></label>
+          </div>
         </div>
 
         <div class="dialog-actions">
@@ -265,6 +306,8 @@
     </dialog>
 
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
     <script src="app.js"></script>
   </body>
 </html>
