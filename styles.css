@@ -23,8 +23,23 @@ html {
 body {
   margin: 0;
   color: var(--ink);
-  background: var(--bg);
+  background:
+    radial-gradient(circle at 20% 0%, rgba(29, 112, 241, 0.08), transparent 34%),
+    linear-gradient(180deg, #ffffff 0%, var(--bg) 42%, #ffffff 100%);
   font-family: Inter, Arial, sans-serif;
+}
+
+body::before {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  content: "";
+  opacity: 0.22;
+  background-image:
+    linear-gradient(rgba(15, 23, 42, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(15, 23, 42, 0.04) 1px, transparent 1px);
+  background-size: 42px 42px;
 }
 
 button,
@@ -91,6 +106,7 @@ a {
   border-radius: 8px;
   border: 1px solid transparent;
   font-weight: 800;
+  transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease, border-color 180ms ease;
 }
 
 .primary-button {
@@ -101,6 +117,8 @@ a {
 
 .primary-button:hover {
   background: var(--blue-dark);
+  box-shadow: 0 12px 24px rgba(29, 112, 241, 0.22);
+  transform: translateY(-1px);
 }
 
 .secondary-button {
@@ -108,6 +126,12 @@ a {
   color: var(--blue);
   background: #ffffff;
   border-color: var(--line);
+}
+
+.secondary-button:hover {
+  border-color: rgba(29, 112, 241, 0.34);
+  box-shadow: 0 10px 22px rgba(15, 23, 42, 0.08);
+  transform: translateY(-1px);
 }
 
 .text-button {
@@ -147,7 +171,8 @@ a {
   min-height: calc(100vh - 72px);
   padding: clamp(56px, 8vw, 96px) clamp(20px, 6vw, 72px);
   background:
-    linear-gradient(90deg, rgba(248, 250, 252, 0.94), rgba(248, 250, 252, 0.74)),
+    linear-gradient(90deg, rgba(248, 250, 252, 0.95), rgba(248, 250, 252, 0.7)),
+    radial-gradient(circle at 80% 20%, rgba(29, 112, 241, 0.28), transparent 28%),
     url("https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1800&q=80") center/cover;
 }
 
@@ -282,6 +307,17 @@ h3 {
   padding: 22px;
   background: #ffffff;
   box-shadow: 0 14px 32px rgba(15, 23, 42, 0.06);
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+.steps article:hover,
+.path-grid article:hover,
+.pricing-card:hover,
+.value-list article:hover,
+.faq-list details:hover {
+  transform: translateY(-2px);
+  border-color: rgba(29, 112, 241, 0.24);
+  box-shadow: 0 20px 42px rgba(15, 23, 42, 0.1);
 }
 
 .steps span {
@@ -360,6 +396,14 @@ textarea {
   padding: 13px 14px;
   color: var(--ink);
   background: #ffffff;
+  transition: border-color 160ms ease, box-shadow 160ms ease, background 160ms ease;
+}
+
+input:focus,
+textarea:focus {
+  outline: 0;
+  border-color: rgba(29, 112, 241, 0.72);
+  box-shadow: 0 0 0 4px rgba(29, 112, 241, 0.12);
 }
 
 textarea {
@@ -509,6 +553,68 @@ textarea {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 12px;
+}
+
+.form-progress {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin: 0 0 18px;
+}
+
+.form-progress span {
+  display: grid;
+  min-height: 36px;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--muted);
+  background: #ffffff;
+  font-weight: 900;
+}
+
+.form-progress span.active,
+.form-progress span.complete {
+  color: #ffffff;
+  background: linear-gradient(135deg, var(--blue), #0f766e);
+  border-color: transparent;
+}
+
+.step-hidden {
+  display: none !important;
+}
+
+.input-prefix {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.input-prefix > span {
+  padding: 0 12px;
+  color: var(--blue);
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.input-prefix input {
+  border: 0;
+  border-left: 1px solid var(--line);
+  border-radius: 0 8px 8px 0;
+}
+
+.word-count,
+.form-note {
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.word-count.valid {
+  color: var(--green);
 }
 
 label {

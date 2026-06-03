@@ -22,6 +22,88 @@ const siteHeader = document.querySelector(".site-header");
 const generateBriefButton = document.querySelector("#generate-brief");
 const generatedBrief = document.querySelector("#generated-brief");
 const toast = document.querySelector("#toast");
+const previousStepButton = document.querySelector("#previous-step");
+const nextStepButton = document.querySelector("#next-step");
+const formProgress = document.querySelector("#form-progress");
+const countryInput = document.querySelector("#country-input");
+const phoneInput = document.querySelector("#phone-input");
+const summaryWordCount = document.querySelector("#summary-word-count");
+
+let currentFormStep = 1;
+let currentFormType = "cv";
+
+const minimumProfileWords = 200;
+
+const countries = [
+  { name: "Nigeria", dialCode: "+234" },
+  { name: "Spain", dialCode: "+34" },
+  { name: "Portugal", dialCode: "+351" },
+  { name: "United States", dialCode: "+1" },
+  { name: "United Kingdom", dialCode: "+44" },
+  { name: "Canada", dialCode: "+1" },
+  { name: "Ghana", dialCode: "+233" },
+  { name: "Kenya", dialCode: "+254" },
+  { name: "South Africa", dialCode: "+27" },
+  { name: "Ireland", dialCode: "+353" },
+  { name: "France", dialCode: "+33" },
+  { name: "Germany", dialCode: "+49" },
+  { name: "Netherlands", dialCode: "+31" },
+  { name: "Italy", dialCode: "+39" },
+  { name: "United Arab Emirates", dialCode: "+971" }
+];
+
+const experienceFields = [
+  "Accounting and Finance",
+  "Administration",
+  "Agriculture",
+  "Architecture",
+  "Business Development",
+  "Customer Success",
+  "Data Analysis",
+  "Digital Marketing",
+  "Education",
+  "Engineering",
+  "Executive Leadership",
+  "Healthcare",
+  "Human Resources",
+  "Information Technology",
+  "Legal",
+  "Logistics and Supply Chain",
+  "Operations",
+  "Product Management",
+  "Project Management",
+  "Sales",
+  "Software Engineering"
+];
+
+const experienceYears = [
+  "Internship / entry level",
+  "1+ years",
+  "2+ years",
+  "3+ years",
+  "5+ years",
+  "7+ years",
+  "10+ years",
+  "15+ years"
+];
+
+const industries = [
+  "Technology",
+  "Financial Services",
+  "Healthcare",
+  "Education",
+  "Energy",
+  "Logistics",
+  "Manufacturing",
+  "Retail",
+  "Hospitality",
+  "Legal",
+  "Public Sector",
+  "Non-profit",
+  "Media and Creative",
+  "Real Estate",
+  "Professional Services"
+];
 
 const formCopy = {
   cv: {
@@ -47,7 +129,7 @@ const formCopy = {
 function showToast(message) {
   toast.textContent = message;
   toast.classList.add("show");
-  window.setTimeout(() => toast.classList.remove("show"), 3200);
+  window.setTimeout(() => toast.classList.remove("show"), 5200);
 }
 
 function getSupabaseClient() {
@@ -57,6 +139,81 @@ function getSupabaseClient() {
 function parseMoney(value) {
   const amount = Number(String(value || "").replace(/[^0-9.-]/g, ""));
   return Number.isFinite(amount) ? amount : null;
+}
+
+function formatUsd(value) {
+  const amount = parseMoney(value);
+  if (!amount) return "competitive compensation";
+
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    maximumFractionDigits: 0
+  }).format(amount);
+}
+
+function countWords(value) {
+  return String(value || "")
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean).length;
+}
+
+function populateDatalist(id, values) {
+  const list = document.querySelector(`#${id}`);
+  list.innerHTML = values
+    .map((value) => typeof value === "string" ? value : value.name)
+    .map((value) => `<option value="${value}"></option>`)
+    .join("");
+}
+
+function getCountryMeta(name) {
+  const normalized = String(name || "").trim().toLowerCase();
+  return countries.find((country) => country.name.toLowerCase() === normalized) || null;
+}
+
+function updatePhoneForCountry() {
+  const country = getCountryMeta(countryInput.value);
+  const dialCode = country?.dialCode || "+1";
+  phoneInput.placeholder = `${dialCode} phone number`;
+
+  if (!phoneInput.value.trim()) {
+    phoneInput.value = `${dialCode} `;
+  }
+}
+
+function updateWordCount() {
+  const words = countWords(summaryTextarea.value);
+  summaryWordCount.textContent = `${words} / ${minimumProfileWords} words minimum`;
+  summaryWordCount.classList.toggle("valid", words >= minimumProfileWords);
+}
+
+function getVisibleStepFields() {
+  return applicationForm.querySelectorAll(`[data-step]`);
+}
+
+function setFormStep(step) {
+  currentFormStep = Math.min(3, Math.max(1, step));
+
+  getVisibleStepFields().forEach((field) => {
+    field.classList.toggle("step-hidden", Number(field.dataset.step) !== currentFormStep);
+  });
+
+  formProgress.querySelectorAll("span").forEach((item, index) => {
+    const stepNumber = index + 1;
+    item.classList.toggle("active", stepNumber === currentFormStep);
+    item.classList.toggle("complete", stepNumber < currentFormStep);
+  });
+
+  previousStepButton.hidden = currentFormStep === 1;
+  nextStepButton.hidden = currentFormStep === 3;
+  submitButton.hidden = currentFormStep !== 3;
+}
+
+function resetFormSteps() {
+  currentFormStep = 1;
+  setFormStep(1);
+  updateWordCount();
 }
 
 function hasUploadedFile(file) {
@@ -89,6 +246,7 @@ async function uploadSupabaseFile(file, bucket, folder) {
 
 function openForm(type) {
   const selected = formCopy[type] || formCopy.cv;
+  currentFormType = type;
   sourceInput.value = type;
   formEyebrow.textContent = selected.eyebrow;
   formTitle.textContent = selected.title;
@@ -106,6 +264,8 @@ function openForm(type) {
     : "Write a short note about yourself...";
   applicationForm.reset();
   sourceInput.value = type;
+  updatePhoneForCountry();
+  resetFormSteps();
   formDialog.showModal();
 }
 
@@ -134,37 +294,56 @@ function updateMenuState(isOpen) {
   menuButton.setAttribute("aria-expanded", String(isOpen));
 }
 
+function sentenceCaseList(value, fallback) {
+  return String(value || fallback)
+    .split(/\n|;|,/)
+    .map((item) => item.trim())
+    .filter(Boolean)
+    .slice(0, 7);
+}
+
+function bulletList(items) {
+  return items.map((item) => `- ${item.replace(/^[-*]\s*/, "")}`).join("\n");
+}
+
 function generateVacancyBrief() {
   const data = new FormData(applicationForm);
+  const companyName = data.get("companyName") || "Our organization";
   const industry = data.get("industry") || "the relevant industry";
   const jobTitle = data.get("jobTitle") || "the open role";
   const yearsRequired = data.get("yearsRequired") || "relevant experience";
-  const annualPay = data.get("annualPay") || "competitive compensation";
-  const jobDescription = data.get("jobDescription") || "The organization is seeking a capable professional to support key business goals, collaborate with stakeholders, and deliver high-quality work.";
-  const jobSpecification = data.get("jobSpecification") || "Strong communication, ownership, technical or functional competence, problem-solving ability, and readiness to contribute quickly.";
+  const annualPay = formatUsd(data.get("annualPay"));
+  const jobDescription = data.get("jobDescription") || "Own key responsibilities, collaborate with cross-functional stakeholders, improve team execution, and deliver measurable outcomes.";
+  const jobSpecification = data.get("jobSpecification") || "Strong communication, ownership, analytical thinking, role-specific competence, and readiness to contribute quickly.";
+  const uploadedDocument = data.get("jobDocument");
+  const sourceNote = hasUploadedFile(uploadedDocument)
+    ? `\n\nSource note: This advert should also be reviewed against the uploaded document "${uploadedDocument.name}" before publishing.`
+    : "";
+
+  const responsibilities = sentenceCaseList(jobDescription, jobDescription);
+  const requirements = sentenceCaseList(jobSpecification, jobSpecification);
 
   generatedBrief.value = [
-    `Job Description: ${jobTitle}`,
+    `${companyName} is hiring: ${jobTitle}`,
     "",
-    `We are hiring for ${jobTitle} within ${industry}. The ideal candidate will bring ${yearsRequired}, strong ownership, and the ability to contribute in a fast-moving environment. The role offers ${annualPay} and will focus on delivering measurable value across the responsibilities described by the hiring team.`,
+    `About the role`,
+    `${companyName} is looking for a ${jobTitle} to join its ${industry} team. This role is designed for a high-ownership professional with ${yearsRequired}, sound judgement, and the ability to turn business priorities into consistent execution. The compensation basis shared for this role is ${annualPay}.`,
     "",
-    "Role Summary",
-    jobDescription,
+    "What you will do",
+    bulletList(responsibilities),
     "",
-    "Candidate Specification",
-    jobSpecification,
+    "What we are looking for",
+    bulletList(requirements),
     "",
-    "Shortlist Criteria",
-    "- Demonstrated experience aligned with the role and industry.",
-    "- Clear communication and stakeholder management ability.",
-    "- Evidence of delivery, accountability, and readiness to interview.",
-    "- Compensation and availability fit with the organization's expectations.",
+    "Ideal candidate profile",
+    `The strongest candidates will show clear evidence of relevant ${industry} experience, practical delivery in a comparable ${jobTitle} role, strong communication, and the maturity to operate with minimal hand-holding. They should be able to explain what they have built, improved, led, or delivered in previous roles.`,
     "",
-    "Shareable Social Summary",
-    `UrgentRecruite is supporting a ${industry} organization hiring for ${jobTitle}. Qualified candidates with ${yearsRequired} are invited to express interest for a confidential shortlist review.`
+    "LinkedIn advert summary",
+    `${companyName} is hiring a ${jobTitle}. If you have ${yearsRequired}, a strong track record in ${industry}, and the ability to deliver with clarity and ownership, we would like to hear from you.`,
+    sourceNote
   ].join("\n");
 
-  showToast("Generated vacancy brief added");
+  showToast("Professional advert generated. Review it against the role details before publishing.");
 }
 
 async function postOrStore(endpoint, payload, storageKey) {
@@ -227,12 +406,44 @@ async function saveApplicationToSupabase(formData, payload) {
     skills: [payload.field || "General profile"].filter(Boolean),
     source: payload.source === "intent" ? "intent" : "cv",
     summary: payload.summary || "",
+    word_count: countWords(payload.summary),
     contact_details: [payload.email, payload.phone, payload.linkedin].filter(Boolean).join(" / "),
     notes: cvUpload.name ? `Uploaded file: ${cvUpload.name}` : "Submitted from landing page",
     cv_file_name: cvUpload.name,
     cv_file_path: cvUpload.path
   });
 
+  if (error) throw error;
+  return true;
+}
+
+async function saveDeletedProfileToSupabase(payload, reason) {
+  const client = getSupabaseClient();
+  const deletedProfile = {
+    full_name: payload.fullName || "Unnamed candidate",
+    email: payload.email || "",
+    phone: payload.phone || "",
+    linkedin: payload.linkedin || "",
+    role: payload.field || "Candidate profile",
+    location: payload.country || "",
+    experience: payload.experience || "",
+    source: payload.source === "intent" ? "intent" : "cv",
+    summary: payload.summary || "",
+    word_count: countWords(payload.summary),
+    contact_details: [payload.email, payload.phone, payload.linkedin].filter(Boolean).join(" / "),
+    notes: payload.cvFile ? `Uploaded file: ${payload.cvFile}` : "Submission did not meet profile detail threshold.",
+    deletion_reason: reason,
+    delete_after: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000).toISOString()
+  };
+
+  if (!client) {
+    const existing = JSON.parse(localStorage.getItem("urgentRecruiteDeletedProfiles") || "[]");
+    existing.push({ ...deletedProfile, submittedAt: new Date().toISOString() });
+    localStorage.setItem("urgentRecruiteDeletedProfiles", JSON.stringify(existing));
+    return true;
+  }
+
+  const { error } = await client.from("deleted_profiles").insert(deletedProfile);
   if (error) throw error;
   return true;
 }
@@ -256,6 +467,17 @@ document.querySelectorAll("[data-form]").forEach((button) => {
   button.addEventListener("click", () => openForm(button.dataset.form));
 });
 
+populateDatalist("country-options", countries);
+populateDatalist("experience-field-options", experienceFields);
+populateDatalist("experience-year-options", experienceYears);
+populateDatalist("industry-options", industries);
+
+countryInput.addEventListener("input", updatePhoneForCountry);
+summaryTextarea.addEventListener("input", updateWordCount);
+
+previousStepButton.addEventListener("click", () => setFormStep(currentFormStep - 1));
+nextStepButton.addEventListener("click", () => setFormStep(currentFormStep + 1));
+
 document.querySelector("#cancel-form").addEventListener("click", () => {
   formDialog.close();
 });
@@ -272,6 +494,11 @@ generateBriefButton.addEventListener("click", generateVacancyBrief);
 
 applicationForm.addEventListener("submit", async (event) => {
   event.preventDefault();
+  if (currentFormStep < 3) {
+    setFormStep(currentFormStep + 1);
+    return;
+  }
+
   const formData = new FormData(applicationForm);
   const payload = toPayload(applicationForm);
   const isShortlist = payload.source === "shortlist";
@@ -279,12 +506,21 @@ applicationForm.addEventListener("submit", async (event) => {
   const storageKey = isShortlist ? "urgentRecruiteShortlistRequests" : "urgentRecruiteProfiles";
 
   try {
+    if (!isShortlist && countWords(payload.summary) < minimumProfileWords) {
+      await saveDeletedProfileToSupabase(payload, "Less than 200 written profile words");
+      formDialog.close();
+      showToast("Thanks for submitting. This profile needs at least 200 written words, so it was moved to the review bucket instead of the active shortlist pool.");
+      return;
+    }
+
     const savedToSupabase = await saveApplicationToSupabase(formData, payload);
     if (!savedToSupabase) {
       await postOrStore(endpoint, payload, storageKey);
     }
     formDialog.close();
-    showToast(isShortlist ? "Hiring request submitted." : "Profile submitted.");
+    showToast(isShortlist
+      ? "Hiring request received. Our team will review the role details and prepare your shortlist workflow."
+      : "Profile submitted successfully. It is now ready for recruiter review in the admin dashboard.");
   } catch (error) {
     showToast("Could not submit yet. Please check Supabase setup.");
   }

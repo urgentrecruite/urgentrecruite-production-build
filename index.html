@@ -261,36 +261,48 @@
           <p id="form-description">Tell us about yourself so we can get your profile in front of the right organizations.</p>
         </div>
 
+        <div class="form-progress" id="form-progress" aria-label="Form progress">
+          <span class="active">1</span>
+          <span>2</span>
+          <span>3</span>
+        </div>
+
         <div class="form-grid" id="candidate-fields">
-          <label>Full Name<input name="fullName" placeholder="Enter your full name"></label>
-          <label>Email Address<input name="email" type="email" placeholder="your@email.com"></label>
-          <label>Contact Number<input name="phone" placeholder="+44"></label>
-          <label>LinkedIn Profile<input name="linkedin" placeholder="https://linkedin.com/in/yourprofile"></label>
-          <label>Field of Experience<input name="field" placeholder="Select field"></label>
-          <label>Years of Experience<input name="experience" placeholder="Select experience"></label>
-          <label>Country<input name="country" placeholder="e.g. United Kingdom"></label>
-          <label id="salary-field">Expected Salary<input name="salary" placeholder="e.g. GBP 50,000"></label>
-          <label class="wide" id="summary-field"><span id="summary-label">Career Interests</span><textarea name="summary" id="summary-textarea" placeholder="Write a short note about yourself..."></textarea></label>
-          <label class="wide">Upload CV<input name="cvFile" type="file" accept=".pdf,.doc,.docx"></label>
+          <label data-step="1">Full Name<input name="fullName" placeholder="Enter your full name"></label>
+          <label data-step="1">Email Address<input name="email" type="email" placeholder="your@email.com"></label>
+          <label data-step="1">Country<input name="country" id="country-input" list="country-options" placeholder="Start typing a country"></label>
+          <label data-step="1">Contact Number<input name="phone" id="phone-input" inputmode="tel" placeholder="+1"></label>
+          <label class="wide" data-step="1">LinkedIn Profile<input name="linkedin" placeholder="https://linkedin.com/in/yourprofile"></label>
+          <label data-step="2">Field of Experience<input name="field" list="experience-field-options" placeholder="Start typing your field"></label>
+          <label data-step="2">Years of Experience<input name="experience" list="experience-year-options" placeholder="Select experience"></label>
+          <label id="salary-field" data-step="2">Expected Salary
+            <span class="input-prefix"><span>USD</span><input name="salary" inputmode="decimal" placeholder="$50,000"></span>
+          </label>
+          <label class="wide" id="summary-field" data-step="2"><span id="summary-label">Career Interests</span><textarea name="summary" id="summary-textarea" placeholder="Write at least 200 words about your experience, achievements, preferred roles, tools, certifications, and career goals..."></textarea></label>
+          <div class="wide word-count" id="summary-word-count" data-step="2">0 / 200 words minimum</div>
+          <label class="wide" data-step="3">Upload CV<input name="cvFile" type="file" accept=".pdf,.doc,.docx,.txt,.rtf"></label>
+          <div class="wide form-note" data-step="3">Profiles below 200 written words are moved to the deleted bucket for review instead of the active candidate library.</div>
         </div>
 
         <div class="form-grid hidden" id="shortlist-fields">
-          <label>Your Full Name<input name="contactName" placeholder="Full Name"></label>
-          <label>Work Email Address<input name="workEmail" type="email" placeholder="Work Email"></label>
-          <label>Company Name<input name="companyName" placeholder="Your Company"></label>
-          <label>Company LinkedIn URL<input name="companyLinkedin" placeholder="Company LinkedIn URL"></label>
-          <label>Industry<input name="industry" placeholder="e.g. Technology, Finance"></label>
-          <label>Job Title<input name="jobTitle" placeholder="e.g. Senior Product Manager"></label>
-          <label>Years Required<input name="yearsRequired" placeholder="e.g. 5+ years"></label>
-          <label>Annual Gross Pay<input name="annualPay" placeholder="e.g. 50,000"></label>
-          <label class="wide">Job Description<textarea name="jobDescription" placeholder="Describe the role, responsibilities and what your organisation offers..."></textarea></label>
-          <label class="wide">Job Specification<textarea name="jobSpecification" placeholder="List required skills, qualifications, and experience..."></textarea></label>
-          <label class="wide">Upload Existing JD or Specification<input name="jobDocument" type="file" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg"></label>
-          <div class="wide generated-brief-panel">
+          <label data-step="1">Your Full Name<input name="contactName" placeholder="Full Name"></label>
+          <label data-step="1">Work Email Address<input name="workEmail" type="email" placeholder="Work Email"></label>
+          <label data-step="1">Company Name<input name="companyName" placeholder="Your Company"></label>
+          <label data-step="1">Company LinkedIn URL<input name="companyLinkedin" placeholder="Company LinkedIn URL"></label>
+          <label data-step="2">Industry<input name="industry" list="industry-options" placeholder="e.g. Technology, Finance"></label>
+          <label data-step="2">Job Title<input name="jobTitle" placeholder="e.g. Senior Product Manager"></label>
+          <label data-step="2">Years Required<input name="yearsRequired" list="experience-year-options" placeholder="e.g. 5+ years"></label>
+          <label data-step="2">Annual Gross Pay
+            <span class="input-prefix"><span>USD</span><input name="annualPay" inputmode="decimal" placeholder="$80,000"></span>
+          </label>
+          <label class="wide" data-step="2">Job Description<textarea name="jobDescription" placeholder="Describe the role, responsibilities, team context, reporting line, and what your organisation offers..."></textarea></label>
+          <label class="wide" data-step="2">Job Specification<textarea name="jobSpecification" placeholder="List required skills, qualifications, tools, certifications, and experience..."></textarea></label>
+          <label class="wide" data-step="3">Upload Existing JD or Specification<input name="jobDocument" type="file" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg,.txt,.rtf"></label>
+          <div class="wide generated-brief-panel" data-step="3">
             <div class="generated-brief-header">
               <div>
-                <span>AI vacancy brief</span>
-                <p>Generate a professional job description and specification from the information above.</p>
+                <span>LinkedIn-ready job advert</span>
+                <p>Generate a polished advert from your company, role, requirements, notes, and attached JD filename.</p>
               </div>
               <button class="secondary-button" type="button" id="generate-brief">Generate JD</button>
             </div>
@@ -300,8 +312,15 @@
 
         <div class="dialog-actions">
           <button class="secondary-button" type="button" id="cancel-form">Cancel</button>
+          <button class="secondary-button" type="button" id="previous-step">Back</button>
+          <button class="primary-button" type="button" id="next-step">Continue</button>
           <button class="primary-button" type="submit" id="submit-form">Submit Profile</button>
         </div>
+
+        <datalist id="country-options"></datalist>
+        <datalist id="experience-field-options"></datalist>
+        <datalist id="experience-year-options"></datalist>
+        <datalist id="industry-options"></datalist>
       </form>
     </dialog>
 
