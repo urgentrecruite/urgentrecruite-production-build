@@ -28,6 +28,16 @@
         <button class="primary-button" data-form="shortlist">Request Shortlist</button>
       </div>
       <div class="mobile-menu-controls">
+        <label class="language-picker" aria-label="Choose language">
+          <span>Language</span>
+          <select id="language-select">
+            <option value="en">English</option>
+            <option value="de">Deutsch</option>
+            <option value="es">Espanol</option>
+            <option value="pt">Portugues</option>
+            <option value="fr">Francais</option>
+          </select>
+        </label>
         <button class="menu-button" id="menu-button" aria-label="Open menu" aria-expanded="false">Menu</button>
       </div>
     </header>
@@ -222,12 +232,15 @@
         </nav>
       </div>
       <div class="footer-column">
-        <h3>Operating markets</h3>
+        <h3>Major market areas</h3>
         <div class="country-list" aria-label="Operating countries">
           <span><span aria-hidden="true">🇳🇬</span> Nigeria</span>
           <span><span aria-hidden="true">🇪🇸</span> Spain</span>
           <span><span aria-hidden="true">🇵🇹</span> Portugal</span>
+          <span><span aria-hidden="true">🇩🇪</span> Germany</span>
+          <span><span aria-hidden="true">🇰🇪</span> Kenya</span>
         </div>
+        <p class="market-note">Accessible worldwide, with focused support in these markets.</p>
         <span class="compliance-note">100% Data Protection Compliant</span>
       </div>
       <div class="footer-column">
@@ -262,9 +275,9 @@
         </div>
 
         <div class="form-progress" id="form-progress" aria-label="Form progress">
-          <span class="active">1</span>
-          <span>2</span>
-          <span>3</span>
+          <span class="active">Let us meet you</span>
+          <span>Your career interests</span>
+          <span>Let us have your CV</span>
         </div>
 
         <div class="form-grid" id="candidate-fields">
@@ -276,12 +289,12 @@
           <label data-step="2">Field of Experience<input name="field" list="experience-field-options" placeholder="Start typing your field"></label>
           <label data-step="2">Years of Experience<input name="experience" list="experience-year-options" placeholder="Select experience"></label>
           <label id="salary-field" data-step="2">Expected Salary
-            <span class="input-prefix"><span>USD</span><input name="salary" inputmode="decimal" placeholder="$50,000"></span>
+            <span class="input-prefix"><span id="candidate-currency-code">USD</span><input name="salary" id="candidate-salary-input" inputmode="decimal" placeholder="$50,000"></span>
           </label>
-          <label class="wide" id="summary-field" data-step="2"><span id="summary-label">Career Interests</span><textarea name="summary" id="summary-textarea" placeholder="Write at least 200 words about your experience, achievements, preferred roles, tools, certifications, and career goals..."></textarea></label>
-          <div class="wide word-count" id="summary-word-count" data-step="2">0 / 200 words minimum</div>
+          <label class="wide" id="summary-field" data-step="2"><span id="summary-label">Career Interests</span><textarea name="summary" id="summary-textarea" placeholder="Add a short note about your experience, achievements, preferred roles, tools, certifications, and career goals..."></textarea></label>
+          <div class="wide word-count" id="summary-word-count" data-step="2">Optional note to help us understand the roles, departments, and locations you prefer.</div>
           <label class="wide" data-step="3">Upload CV<input name="cvFile" type="file" accept=".pdf,.doc,.docx,.txt,.rtf"></label>
-          <div class="wide form-note" data-step="3">Profiles below 200 written words are moved to the deleted bucket for review instead of the active candidate library.</div>
+          <div class="wide form-note" data-step="3">Upload your CV or resume in PDF, DOC, DOCX, TXT, or RTF format.</div>
         </div>
 
         <div class="form-grid hidden" id="shortlist-fields">
@@ -293,7 +306,7 @@
           <label data-step="2">Job Title<input name="jobTitle" placeholder="e.g. Senior Product Manager"></label>
           <label data-step="2">Years Required<input name="yearsRequired" list="experience-year-options" placeholder="e.g. 5+ years"></label>
           <label data-step="2">Annual Gross Pay
-            <span class="input-prefix"><span>USD</span><input name="annualPay" inputmode="decimal" placeholder="$80,000"></span>
+            <span class="input-prefix"><span id="request-currency-code">USD</span><input name="annualPay" id="request-pay-input" inputmode="decimal" placeholder="$80,000"></span>
           </label>
           <label class="wide" data-step="2">Job Description<textarea name="jobDescription" placeholder="Describe the role, responsibilities, team context, reporting line, and what your organisation offers..."></textarea></label>
           <label class="wide" data-step="2">Job Specification<textarea name="jobSpecification" placeholder="List required skills, qualifications, tools, certifications, and experience..."></textarea></label>
