@@ -25,6 +25,7 @@
       <div class="header-actions">
         <button class="text-button" data-form="cv">Submit My CV</button>
         <button class="text-button" data-form="intent">I want to Intern</button>
+        <button class="text-button" data-form="intern-request">Request Interns</button>
         <button class="primary-button" data-form="shortlist">Request Shortlist</button>
       </div>
       <div class="mobile-menu-controls">
@@ -47,9 +48,10 @@
         <div class="hero-content">
           <p class="eyebrow">Quality. Discretion. Speed.</p>
           <h1>From vacancy to verified shortlist in record time.</h1>
-          <p class="hero-copy">UrgentRecruite helps organizations review anonymous, pre-vetted candidate profiles before choosing who to unlock and interview.</p>
+          <p class="hero-copy">UrgentRecruite helps organizations review anonymous, pre-vetted candidate profiles before choosing who to unlock and interview. Organizations can also request vetted intern shortlists for free.</p>
           <div class="hero-actions">
             <button class="primary-button large" data-form="shortlist">Request a Shortlist</button>
+            <button class="secondary-button large" data-form="intern-request">Request Free Interns</button>
             <button class="secondary-button large" data-form="cv">Submit My CV</button>
           </div>
         </div>
@@ -65,6 +67,10 @@
           <div>
             <strong>0.5%</strong>
             <span>Pay per profile unlocked</span>
+          </div>
+          <div>
+            <strong>Free</strong>
+            <span>Intern shortlists for organizations</span>
           </div>
         </div>
       </section>
@@ -105,6 +111,14 @@
             <p>Pay only for the profiles you choose to unlock.</p>
           </article>
         </div>
+        <div class="intern-callout">
+          <div>
+            <p class="eyebrow">For organizations</p>
+            <h3>Need interns? Request a vetted intern shortlist free.</h3>
+            <p>We help organizations discover early-career talent without charging for the intern shortlist. Review full intern profiles, select who interests you, and download the shared profile details.</p>
+          </div>
+          <button class="primary-button" data-form="intern-request">Request Interns</button>
+        </div>
       </section>
 
       <section class="section section-muted" id="pricing">
@@ -114,15 +128,27 @@
             <h2>Pay only for the talent you want.</h2>
             <p>No retainers. No traditional placement percentages. Browse pre-vetted shortlists anonymously and unlock only the profiles you want to interview.</p>
           </div>
-          <div class="pricing-card">
-            <span>Per profile unlocked</span>
-            <strong>0.5%</strong>
-            <p>Download full profile and contact details only when you choose to proceed.</p>
-            <ul>
-              <li>No upfront fees</li>
-              <li>Unlimited shortlist reviews</li>
-              <li>Pre-screened candidates</li>
-            </ul>
+          <div class="pricing-cards">
+            <div class="pricing-card">
+              <span>Per profile unlocked</span>
+              <strong>0.5%</strong>
+              <p>Download full profile and contact details only when you choose to proceed.</p>
+              <ul>
+                <li>No upfront fees</li>
+                <li>Unlimited shortlist reviews</li>
+                <li>Pre-screened candidates</li>
+              </ul>
+            </div>
+            <div class="pricing-card intern-pricing-card">
+              <span>Intern shortlists</span>
+              <strong>Free</strong>
+              <p>Organizations can request vetted intern profiles at no shortlist fee, then download selected intern profiles from the shared link.</p>
+              <ul>
+                <li>Free intern shortlist request</li>
+                <li>Full intern profile view</li>
+                <li>Simple download after selection</li>
+              </ul>
+            </div>
           </div>
         </div>
       </section>
@@ -164,6 +190,11 @@
             <button class="primary-button" data-form="shortlist">Request Shortlist</button>
           </article>
           <article>
+            <h3>Organizations hiring interns</h3>
+            <p>Request a free intern shortlist and review full intern profiles from a shared link.</p>
+            <button class="primary-button" data-form="intern-request">Request Interns</button>
+          </article>
+          <article>
             <h3>Candidates</h3>
             <p>Submit your CV so your profile can be considered for suitable roles.</p>
             <button class="secondary-button" data-form="cv">Submit My CV</button>
@@ -193,6 +224,10 @@
           <details>
             <summary>Are we obligated to hire?</summary>
             <p>No. You only pay to unlock profiles you actually want to interview.</p>
+          </details>
+          <details>
+            <summary>Is the intern shortlist really free for organizations?</summary>
+            <p>Yes. Organizations can request intern shortlists for free and receive a shared link with full intern profile details for the selected intern shortlist.</p>
           </details>
           <details>
             <summary>Which industries do you support?</summary>
@@ -228,6 +263,7 @@
         <ul class="footer-list">
           <li>Anonymous candidate shortlists</li>
           <li>CV and profile screening</li>
+          <li>Free intern shortlists for organizations</li>
           <li>Internship matching</li>
           <li>Pay-per-profile unlocks</li>
         </ul>
@@ -312,7 +348,7 @@
           <label data-step="2">Industry<input name="industry" list="industry-options" placeholder="e.g. Technology, Finance"></label>
           <label data-step="2">Job Title<input name="jobTitle" placeholder="e.g. Senior Product Manager"></label>
           <label data-step="2">Years Required<input name="yearsRequired" list="experience-year-options" placeholder="e.g. 5+ years"></label>
-          <label data-step="2">Annual Gross Pay
+          <label data-step="2" id="request-pay-field">Annual Gross Pay
             <span class="input-prefix"><span id="request-currency-code">USD</span><input name="annualPay" id="request-pay-input" inputmode="decimal" placeholder="$80,000"></span>
           </label>
           <label class="wide" data-step="2">Job Description<textarea name="jobDescription" placeholder="Describe the role, responsibilities, team context, reporting line, and what your organisation offers..."></textarea></label>

@@ -33,6 +33,7 @@ const candidateCurrencyCode = document.querySelector("#candidate-currency-code")
 const candidateSalaryInput = document.querySelector("#candidate-salary-input");
 const requestCurrencyCode = document.querySelector("#request-currency-code");
 const requestPayInput = document.querySelector("#request-pay-input");
+const requestPayField = document.querySelector("#request-pay-field");
 
 let currentFormStep = 1;
 let currentFormType = "cv";
@@ -127,6 +128,12 @@ const formCopy = {
     title: "Request a Shortlist",
     description: "Tell us what you need and our team will prepare a verified shortlist tailored to your vacancy.",
     button: "Submit Hiring Request"
+  },
+  "intern-request": {
+    eyebrow: "Free intern shortlist",
+    title: "Request Interns",
+    description: "Tell us the department, skills, and intern profile you need. Intern shortlists are free for organizations.",
+    button: "Submit Intern Request"
   }
 };
 
@@ -796,8 +803,16 @@ function translateStaticPage() {
   translatePlaceholders();
 }
 
+function isHiringRequestType(type) {
+  return type === "shortlist" || type === "intern-request";
+}
+
+function isInternRequestType(type) {
+  return type === "intern-request";
+}
+
 function getStepLabels(type = currentFormType) {
-  if (type === "shortlist") {
+  if (isHiringRequestType(type)) {
     return [t("Organization details"), t("Role requirements"), t("Share the brief")];
   }
 
@@ -970,11 +985,13 @@ function openForm(type) {
   sourceInput.value = type;
   applyFormCopy(type);
 
-  const isShortlist = type === "shortlist";
+  const isShortlist = isHiringRequestType(type);
   const isIntent = type === "intent";
+  const isInternRequest = isInternRequestType(type);
   candidateFields.classList.toggle("hidden", isShortlist);
   shortlistFields.classList.toggle("hidden", !isShortlist);
   salaryField.classList.toggle("hidden", isIntent);
+  if (requestPayField) requestPayField.classList.toggle("hidden", isInternRequest);
   applicationForm.reset();
   sourceInput.value = type;
   updatePhoneForCountry();
@@ -991,10 +1008,15 @@ function applyFormCopy(type = currentFormType) {
   submitButton.textContent = t(selected.button);
 
   const isIntent = type === "intent";
+  const isInternRequest = isInternRequestType(type);
   summaryLabel.textContent = isIntent ? t("Note for us") : t("Career Interests");
   summaryTextarea.placeholder = isIntent
     ? placeholderTranslations[currentLanguage]?.["Write a short note for us about your preferred department, field, or internship goals..."] || "Write a short note for us about your preferred department, field, or internship goals..."
     : placeholderTranslations[currentLanguage]?.["Write a short note about yourself..."] || "Write a short note about yourself...";
+
+  if (isInternRequest && requestPayInput) {
+    requestPayInput.value = "";
+  }
 }
 
 function toPayload(form) {
@@ -1036,13 +1058,18 @@ function bulletList(items) {
 
 function generateVacancyBrief() {
   const data = new FormData(applicationForm);
+  const isInternRequest = isInternRequestType(currentFormType);
   const companyName = data.get("companyName") || "Our organization";
   const industry = data.get("industry") || "the relevant industry";
-  const jobTitle = data.get("jobTitle") || "the open role";
-  const yearsRequired = data.get("yearsRequired") || "relevant experience";
+  const jobTitle = data.get("jobTitle") || (isInternRequest ? "internship opportunity" : "the open role");
+  const yearsRequired = data.get("yearsRequired") || (isInternRequest ? "entry-level readiness" : "relevant experience");
   const annualPay = formatCurrency(data.get("annualPay"));
-  const jobDescription = data.get("jobDescription") || "Own key responsibilities, collaborate with cross-functional stakeholders, improve team execution, and deliver measurable outcomes.";
-  const jobSpecification = data.get("jobSpecification") || "Strong communication, ownership, analytical thinking, role-specific competence, and readiness to contribute quickly.";
+  const jobDescription = data.get("jobDescription") || (isInternRequest
+    ? "Support meaningful projects, learn from experienced team members, contribute to day-to-day execution, and build practical workplace experience."
+    : "Own key responsibilities, collaborate with cross-functional stakeholders, improve team execution, and deliver measurable outcomes.");
+  const jobSpecification = data.get("jobSpecification") || (isInternRequest
+    ? "Curiosity, reliability, communication, willingness to learn, foundational field knowledge, and readiness to contribute with guidance."
+    : "Strong communication, ownership, analytical thinking, role-specific competence, and readiness to contribute quickly.");
   const uploadedDocument = data.get("jobDocument");
   const sourceNote = hasUploadedFile(uploadedDocument)
     ? `\n\nSource note: This advert should also be reviewed against the uploaded document "${uploadedDocument.name}" before publishing.`
@@ -1055,7 +1082,9 @@ function generateVacancyBrief() {
     `${companyName} is hiring: ${jobTitle}`,
     "",
     `About the role`,
-    `${companyName} is looking for a ${jobTitle} to join its ${industry} team. This role is designed for a high-ownership professional with ${yearsRequired}, sound judgement, and the ability to turn business priorities into consistent execution. The compensation basis shared for this role is ${annualPay}.`,
+    isInternRequest
+      ? `${companyName} is looking for motivated interns to support its ${industry} team. This opportunity is designed for early-career talent with ${yearsRequired}, curiosity, reliability, and the willingness to learn through practical work.`
+      : `${companyName} is looking for a ${jobTitle} to join its ${industry} team. This role is designed for a high-ownership professional with ${yearsRequired}, sound judgement, and the ability to turn business priorities into consistent execution. The compensation basis shared for this role is ${annualPay}.`,
     "",
     "What you will do",
     bulletList(responsibilities),
@@ -1064,10 +1093,14 @@ function generateVacancyBrief() {
     bulletList(requirements),
     "",
     "Ideal candidate profile",
-    `The strongest candidates will show clear evidence of relevant ${industry} experience, practical delivery in a comparable ${jobTitle} role, strong communication, and the maturity to operate with minimal hand-holding. They should be able to explain what they have built, improved, led, or delivered in previous roles.`,
+    isInternRequest
+      ? `The strongest intern profiles will show clear interest in ${industry}, strong communication, willingness to learn, reliability, and examples of academic, volunteer, project, or early workplace experience that show initiative.`
+      : `The strongest candidates will show clear evidence of relevant ${industry} experience, practical delivery in a comparable ${jobTitle} role, strong communication, and the maturity to operate with minimal hand-holding. They should be able to explain what they have built, improved, led, or delivered in previous roles.`,
     "",
     "LinkedIn advert summary",
-    `${companyName} is hiring a ${jobTitle}. If you have ${yearsRequired}, a strong track record in ${industry}, and the ability to deliver with clarity and ownership, we would like to hear from you.`,
+    isInternRequest
+      ? `${companyName} is opening internship opportunities in ${industry}. If you are curious, reliable, eager to learn, and ready to contribute to real projects, we would like to hear from you.`
+      : `${companyName} is hiring a ${jobTitle}. If you have ${yearsRequired}, a strong track record in ${industry}, and the ability to deliver with clarity and ownership, we would like to hear from you.`,
     sourceNote
   ].join("\n");
 
@@ -1099,7 +1132,8 @@ async function saveApplicationToSupabase(formData, payload) {
   const client = getSupabaseClient();
   if (!client) return false;
 
-  if (payload.source === "shortlist") {
+  if (isHiringRequestType(payload.source)) {
+    const isInternRequest = isInternRequestType(payload.source);
     const documentUpload = await uploadSupabaseFile(formData.get("jobDocument"), "job-documents", "shortlist-requests");
     const { error } = await client.from("shortlist_requests").insert({
       organization: payload.companyName || "Unnamed organization",
@@ -1107,14 +1141,15 @@ async function saveApplicationToSupabase(formData, payload) {
       work_email: payload.workEmail || "",
       company_linkedin: payload.companyLinkedin || "",
       industry: payload.industry || "",
-      job_title: payload.jobTitle || "Shortlist request",
-      years_required: payload.yearsRequired || "",
-      annual_gross_pay: parseMoney(payload.annualPay),
+      job_title: payload.jobTitle || (isInternRequest ? "Intern shortlist request" : "Shortlist request"),
+      years_required: payload.yearsRequired || (isInternRequest ? "Internship / entry level" : ""),
+      annual_gross_pay: isInternRequest ? null : parseMoney(payload.annualPay),
       job_description: payload.jobDescription || "",
       job_specification: payload.jobSpecification || "",
       generated_brief: payload.generatedBrief || "",
       job_document_name: documentUpload.name,
-      job_document_path: documentUpload.path
+      job_document_path: documentUpload.path,
+      payment_status: isInternRequest ? "free_intern" : "unpaid"
     });
 
     if (error) throw error;
@@ -1232,7 +1267,8 @@ applicationForm.addEventListener("submit", async (event) => {
 
   const formData = new FormData(applicationForm);
   const payload = toPayload(applicationForm);
-  const isShortlist = payload.source === "shortlist";
+  const isShortlist = isHiringRequestType(payload.source);
+  const isInternRequest = isInternRequestType(payload.source);
   const endpoint = isShortlist ? CONFIG.shortlistEndpoint : CONFIG.profileEndpoint;
   const storageKey = isShortlist ? "urgentRecruiteShortlistRequests" : "urgentRecruiteProfiles";
 
@@ -1242,9 +1278,11 @@ applicationForm.addEventListener("submit", async (event) => {
       await postOrStore(endpoint, payload, storageKey);
     }
     formDialog.close();
-    showToast(isShortlist
-      ? "Hiring request received. Our team will review the role details and prepare your shortlist workflow."
-      : "Profile submitted successfully. Our team will review your CV and prepare it for suitable opportunities.");
+    showToast(isInternRequest
+      ? "Intern request received. Our team will prepare a free intern shortlist for your organization."
+      : isShortlist
+        ? "Hiring request received. Our team will review the role details and prepare your shortlist workflow."
+        : "Profile submitted successfully. Our team will review your CV and prepare it for suitable opportunities.");
   } catch (error) {
     showToast("Could not submit yet. Please check Supabase setup.");
   }

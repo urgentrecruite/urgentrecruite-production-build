@@ -23,6 +23,7 @@ html {
 
 body {
   margin: 0;
+  overflow-x: hidden;
   color: var(--ink);
   background:
     radial-gradient(circle at 20% 0%, rgba(29, 112, 241, 0.08), transparent 34%),
@@ -342,6 +343,7 @@ h3 {
 .steps article,
 .path-grid article,
 .pricing-card,
+.intern-callout,
 .value-list article,
 .faq-list details {
   border: 1px solid var(--line);
@@ -355,6 +357,7 @@ h3 {
 .steps article:hover,
 .path-grid article:hover,
 .pricing-card:hover,
+.intern-callout:hover,
 .value-list article:hover,
 .faq-list details:hover {
   transform: translateY(-2px);
@@ -392,12 +395,21 @@ h3 {
   align-items: start;
 }
 
+.pricing-cards {
+  display: grid;
+  gap: 16px;
+}
+
 .pricing-card strong {
   display: block;
   margin: 8px 0 12px;
   color: var(--blue);
   font-size: 64px;
   line-height: 1;
+}
+
+.intern-pricing-card {
+  background: #f8fbff;
 }
 
 .pricing-card ul {
@@ -408,7 +420,23 @@ h3 {
 }
 
 .path-grid {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.intern-callout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 18px;
+  max-width: 980px;
+  margin: 24px auto 0;
+  background: #f8fbff;
+}
+
+.intern-callout p {
+  margin-bottom: 0;
+  color: var(--muted);
+  line-height: 1.65;
 }
 
 .faq-list {
@@ -783,7 +811,29 @@ label {
 
 @media (max-width: 1060px) {
   .site-header {
-    grid-template-columns: auto auto;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 12px;
+    padding-inline: 14px;
+  }
+
+  .brand img {
+    width: min(148px, 38vw);
+  }
+
+  .mobile-menu-controls {
+    min-width: 0;
+    gap: 6px;
+  }
+
+  .language-picker {
+    grid-template-columns: 1fr;
+    gap: 3px;
+    font-size: 10px;
+  }
+
+  .language-picker select {
+    width: min(34vw, 138px);
+    padding-inline: 8px;
   }
 
   .nav-links,
@@ -818,9 +868,46 @@ label {
   .path-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+
+  .intern-callout {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 680px) {
+  .site-header {
+    min-height: 64px;
+  }
+
+  .mobile-menu-controls {
+    max-width: 52vw;
+  }
+
+  .language-picker > span {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+
+  .menu-button {
+    min-height: 38px;
+    max-width: 76px;
+    padding-inline: 9px;
+    font-size: 13px;
+    white-space: nowrap;
+  }
+
+  .site-header.open .menu-button {
+    font-size: 0;
+  }
+
+  .site-header.open .menu-button::after {
+    content: "Close";
+    font-size: 13px;
+  }
+
   .hero-actions,
   .dialog-actions,
   .generated-brief-header {
