@@ -51,21 +51,28 @@ a {
   top: 0;
   z-index: 20;
   display: grid;
-  grid-template-columns: auto 1fr auto auto;
+  grid-template-columns: auto minmax(0, 1fr) auto auto;
   align-items: center;
-  gap: 24px;
+  gap: clamp(14px, 1.8vw, 24px);
   min-height: 72px;
-  padding: 12px clamp(18px, 4vw, 48px);
+  padding: 10px clamp(14px, 3vw, 40px);
   border-bottom: 1px solid rgba(226, 232, 240, 0.9);
   background: rgba(255, 255, 255, 0.88);
   backdrop-filter: blur(14px);
 }
 
+.brand {
+  display: inline-flex;
+  align-items: center;
+  overflow: hidden;
+}
+
 .brand img {
   display: block;
-  width: 158px;
-  height: 48px;
+  width: 132px;
+  height: 40px;
   object-fit: contain;
+  object-position: center;
 }
 
 .nav-links,
@@ -81,6 +88,13 @@ a {
   color: var(--muted);
   font-size: 14px;
   font-weight: 700;
+}
+
+.nav-links a,
+.header-actions button,
+.language-picker,
+.language-picker select {
+  white-space: nowrap;
 }
 
 .nav-links a:hover {
@@ -294,7 +308,7 @@ h3 {
   gap: 20px 34px;
   padding: 22px 20px;
   color: var(--muted);
-  background: #ffffff;
+  background: var(--surface);
   border-block: 1px solid var(--line);
 }
 
@@ -306,7 +320,7 @@ h3 {
   position: relative;
   isolation: isolate;
   padding: clamp(64px, 8vw, 104px) clamp(20px, 6vw, 72px);
-  background: #ffffff;
+  background: var(--surface);
 }
 
 .section-muted {
@@ -409,7 +423,7 @@ h3 {
 }
 
 .intern-pricing-card {
-  background: #f8fbff;
+  background: var(--blue-soft);
 }
 
 .pricing-card ul {
@@ -430,7 +444,7 @@ h3 {
   gap: 18px;
   max-width: 980px;
   margin: 24px auto 0;
-  background: #f8fbff;
+  background: var(--blue-soft);
 }
 
 .intern-callout p {
@@ -817,7 +831,7 @@ label {
   }
 
   .brand img {
-    width: min(148px, 38vw);
+    width: min(132px, 36vw);
   }
 
   .mobile-menu-controls {
@@ -877,6 +891,7 @@ label {
 @media (max-width: 680px) {
   .site-header {
     min-height: 64px;
+    padding-inline: 10px;
   }
 
   .mobile-menu-controls {
