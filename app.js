@@ -223,6 +223,9 @@ const translations = {
     "Accessible worldwide, with focused support in these markets.": "Weltweit erreichbar, mit fokussiertem Support in diesen Markten.",
     "100% Data Protection Compliant": "100% datenschutzkonform",
     "Connect": "Verbinden",
+    "Privacy Policy": "Datenschutzerklarung",
+    "Terms & Conditions": "Allgemeine Geschaftsbedingungen",
+    "Cookie Preferences": "Cookie-Einstellungen",
     "UrgentRecruite | Quality. Discretion. Speed.": "UrgentRecruite | Qualitat. Diskretion. Geschwindigkeit.",
     "UrgentRecruite helps organizations review anonymous, pre-vetted candidate profiles before choosing who to unlock and interview. Organizations can also request vetted intern shortlists for free.": "UrgentRecruite hilft Unternehmen, anonyme und vorgeprufte Kandidatenprofile zu sichten, bevor sie entscheiden, wen sie freischalten und interviewen. Unternehmen konnen auch geprufte Praktikanten-Shortlists kostenlos anfordern.",
     "Request Interns": "Praktikanten anfordern",
@@ -355,6 +358,9 @@ const translations = {
     "Accessible worldwide, with focused support in these markets.": "Accesible a nivel mundial, con soporte enfocado en estos mercados.",
     "100% Data Protection Compliant": "100% conforme con proteccion de datos",
     "Connect": "Conectar",
+    "Privacy Policy": "Politica de privacidad",
+    "Terms & Conditions": "Terminos y condiciones",
+    "Cookie Preferences": "Preferencias de cookies",
     "UrgentRecruite | Quality. Discretion. Speed.": "UrgentRecruite | Calidad. Discrecion. Rapidez.",
     "UrgentRecruite helps organizations review anonymous, pre-vetted candidate profiles before choosing who to unlock and interview. Organizations can also request vetted intern shortlists for free.": "UrgentRecruite ayuda a las organizaciones a revisar perfiles anonimos y preevaluados antes de decidir a quien desbloquear y entrevistar. Las organizaciones tambien pueden solicitar shortlists de practicantes verificados gratis.",
     "Request Interns": "Solicitar practicantes",
@@ -487,6 +493,9 @@ const translations = {
     "Accessible worldwide, with focused support in these markets.": "Acessivel mundialmente, com apoio focado nestes mercados.",
     "100% Data Protection Compliant": "100% conforme com protecao de dados",
     "Connect": "Ligar",
+    "Privacy Policy": "Politica de privacidade",
+    "Terms & Conditions": "Termos e condicoes",
+    "Cookie Preferences": "Preferencias de cookies",
     "UrgentRecruite | Quality. Discretion. Speed.": "UrgentRecruite | Qualidade. Discricao. Rapidez.",
     "UrgentRecruite helps organizations review anonymous, pre-vetted candidate profiles before choosing who to unlock and interview. Organizations can also request vetted intern shortlists for free.": "A UrgentRecruite ajuda organizacoes a rever perfis anonimos e pre-avaliados antes de escolher quem desbloquear e entrevistar. As organizacoes tambem podem pedir shortlists de estagiarios avaliados gratuitamente.",
     "Request Interns": "Pedir estagiarios",
@@ -619,6 +628,9 @@ const translations = {
     "Accessible worldwide, with focused support in these markets.": "Accessible dans le monde entier, avec un support cible dans ces marches.",
     "100% Data Protection Compliant": "100% conforme a la protection des donnees",
     "Connect": "Connecter",
+    "Privacy Policy": "Politique de confidentialite",
+    "Terms & Conditions": "Conditions generales",
+    "Cookie Preferences": "Preferences de cookies",
     "UrgentRecruite | Quality. Discretion. Speed.": "UrgentRecruite | Qualite. Discretion. Rapidite.",
     "UrgentRecruite helps organizations review anonymous, pre-vetted candidate profiles before choosing who to unlock and interview. Organizations can also request vetted intern shortlists for free.": "UrgentRecruite aide les organisations a examiner des profils anonymes et prequalifies avant de choisir qui debloquer et interviewer. Les organisations peuvent aussi demander gratuitement des shortlists de stagiaires verifies.",
     "Request Interns": "Demander des stagiaires",
@@ -1029,6 +1041,16 @@ function showToast(message) {
   window.setTimeout(() => toast.classList.remove("show"), 5200);
 }
 
+function trackAnalyticsEvent(eventName, parameters = {}) {
+  if (!window.urgentRecruiteAnalytics?.trackEvent) return;
+  window.urgentRecruiteAnalytics.trackEvent(eventName, parameters);
+}
+
+function getCtaLocation(element) {
+  const section = element.closest("section, header, footer");
+  return section?.id || section?.className?.split(" ")[0] || "page";
+}
+
 function getSupabaseClient() {
   return window.urgentRecruiteSupabase || null;
 }
@@ -1418,7 +1440,14 @@ async function saveContactToSupabase(payload) {
 }
 
 document.querySelectorAll("[data-form]").forEach((button) => {
-  button.addEventListener("click", () => openForm(button.dataset.form));
+  button.addEventListener("click", () => {
+    trackAnalyticsEvent("cta_click", {
+      cta_type: button.dataset.form,
+      cta_text: button.textContent.trim(),
+      cta_location: getCtaLocation(button)
+    });
+    openForm(button.dataset.form);
+  });
 });
 
 populateDatalist("country-options", countries);
@@ -1445,7 +1474,14 @@ document.querySelectorAll(".nav-links a").forEach((link) => {
   link.addEventListener("click", () => updateMenuState(false));
 });
 
-generateBriefButton.addEventListener("click", generateVacancyBrief);
+generateBriefButton.addEventListener("click", () => {
+  trackAnalyticsEvent("cta_click", {
+    cta_type: "generate_jd",
+    cta_text: generateBriefButton.textContent.trim(),
+    cta_location: "application-form"
+  });
+  generateVacancyBrief();
+});
 
 applicationForm.addEventListener("submit", async (event) => {
   event.preventDefault();
@@ -1467,6 +1503,10 @@ applicationForm.addEventListener("submit", async (event) => {
       await postOrStore(endpoint, payload, storageKey);
     }
     formDialog.close();
+    trackAnalyticsEvent(isShortlist ? "employer_request_submission" : "candidate_application_submission", {
+      submission_type: payload.source,
+      saved_to_supabase: savedToSupabase
+    });
     showToast(isInternRequest
       ? "Intern request received. Our team will prepare a free intern shortlist for your organization."
       : isShortlist
@@ -1487,6 +1527,9 @@ document.querySelector("#contact-form").addEventListener("submit", async (event)
       await postOrStore(CONFIG.contactEndpoint, payload, "urgentRecruiteContactRequests");
     }
     event.currentTarget.reset();
+    trackAnalyticsEvent("contact_form_submission", {
+      saved_to_supabase: savedToSupabase
+    });
     showToast("Callback request received.");
   } catch (error) {
     showToast("Could not submit contact request yet.");
