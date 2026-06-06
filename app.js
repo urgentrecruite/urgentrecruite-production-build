@@ -140,6 +140,7 @@ const formCopy = {
 const translations = {
   de: {
     "How it works": "So funktioniert es",
+    "Process": "Prozess",
     "Pricing": "Preise",
     "About": "Uber uns",
     "FAQ": "FAQ",
@@ -148,6 +149,7 @@ const translations = {
     "Submit My CV": "Lebenslauf einreichen",
     "I want to Intern": "Ich mochte ein Praktikum",
     "Request Shortlist": "Shortlist anfordern",
+    "Shortlist": "Shortlist",
     "Menu": "Menu",
     "Close menu": "Menu schliessen",
     "Open menu": "Menu offnen",
@@ -234,6 +236,7 @@ const translations = {
   },
   es: {
     "How it works": "Como funciona",
+    "Process": "Proceso",
     "Pricing": "Precios",
     "About": "Sobre nosotros",
     "FAQ": "FAQ",
@@ -242,6 +245,7 @@ const translations = {
     "Submit My CV": "Enviar mi CV",
     "I want to Intern": "Quiero hacer practicas",
     "Request Shortlist": "Solicitar shortlist",
+    "Shortlist": "Shortlist",
     "Menu": "Menu",
     "Close menu": "Cerrar menu",
     "Open menu": "Abrir menu",
@@ -328,6 +332,7 @@ const translations = {
   },
   pt: {
     "How it works": "Como funciona",
+    "Process": "Processo",
     "Pricing": "Precos",
     "About": "Sobre",
     "FAQ": "FAQ",
@@ -336,6 +341,7 @@ const translations = {
     "Submit My CV": "Enviar o meu CV",
     "I want to Intern": "Quero estagiar",
     "Request Shortlist": "Pedir shortlist",
+    "Shortlist": "Shortlist",
     "Menu": "Menu",
     "Close menu": "Fechar menu",
     "Open menu": "Abrir menu",
@@ -422,6 +428,7 @@ const translations = {
   },
   fr: {
     "How it works": "Fonctionnement",
+    "Process": "Processus",
     "Pricing": "Tarifs",
     "About": "A propos",
     "FAQ": "FAQ",
@@ -430,6 +437,7 @@ const translations = {
     "Submit My CV": "Envoyer mon CV",
     "I want to Intern": "Je veux un stage",
     "Request Shortlist": "Demander une shortlist",
+    "Shortlist": "Shortlist",
     "Menu": "Menu",
     "Close menu": "Fermer le menu",
     "Open menu": "Ouvrir le menu",
