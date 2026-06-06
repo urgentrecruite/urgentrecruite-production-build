@@ -53,11 +53,11 @@ a {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr) auto auto;
   align-items: center;
-  gap: clamp(14px, 1.8vw, 28px);
-  min-height: 68px;
-  padding: 9px clamp(18px, 3.4vw, 56px);
+  gap: clamp(28px, 4vw, 72px);
+  min-height: 88px;
+  padding: 14px clamp(28px, 5vw, 76px);
   border-bottom: 1px solid rgba(226, 232, 240, 0.9);
-  background: rgba(255, 255, 255, 0.94);
+  background: rgba(255, 255, 255, 0.96);
   backdrop-filter: blur(16px);
 }
 
@@ -69,8 +69,8 @@ a {
 
 .brand img {
   display: block;
-  width: 142px;
-  height: 42px;
+  width: 132px;
+  height: 38px;
   object-fit: cover;
   object-position: center;
 }
@@ -80,15 +80,23 @@ a {
 .hero-actions {
   display: flex;
   align-items: center;
-  gap: 14px;
 }
 
 .nav-links {
   justify-content: center;
+  gap: clamp(24px, 3.1vw, 52px);
   color: var(--muted);
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   line-height: 1;
+}
+
+.header-actions {
+  gap: 8px;
+}
+
+.hero-actions {
+  gap: 14px;
 }
 
 .nav-links a,
@@ -139,12 +147,16 @@ a {
 }
 
 .text-button {
-  min-height: 36px;
-  padding: 0 6px;
+  min-height: 40px;
+  padding: 0 10px;
   color: var(--muted);
   background: transparent;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
+}
+
+.header-actions [data-form="intent"] {
+  display: none;
 }
 
 .text-button:hover {
@@ -167,25 +179,33 @@ a {
 .mobile-menu-controls {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   justify-content: flex-end;
 }
 
 .language-picker {
   display: grid;
-  grid-template-columns: auto auto;
+  grid-template-columns: auto;
   align-items: center;
-  gap: 8px;
+  gap: 0;
   color: var(--muted);
   font-size: 12px;
   font-weight: 700;
 }
 
+.language-picker > span {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}
+
 .language-picker select {
-  min-height: 40px;
+  min-height: 44px;
   border: 1px solid var(--line);
   border-radius: 8px;
-  padding: 0 12px;
+  padding: 0 14px;
   color: var(--ink);
   background: #ffffff;
   font-size: 13px;
@@ -193,8 +213,8 @@ a {
 }
 
 .site-header .primary-button {
-  min-height: 44px;
-  padding-inline: 18px;
+  min-height: 48px;
+  padding-inline: 22px;
   font-size: 14px;
   line-height: 1;
 }
@@ -834,7 +854,7 @@ label {
   opacity: 1;
 }
 
-@media (max-width: 1280px) {
+@media (max-width: 1160px) {
   .site-header {
     grid-template-columns: minmax(0, 1fr) auto;
     gap: 12px;
@@ -889,6 +909,10 @@ label {
 
   .site-header.open .nav-links a {
     background: #f8fafc;
+  }
+
+  .site-header.open .header-actions [data-form="intent"] {
+    display: inline-flex;
   }
 
   .menu-button {
