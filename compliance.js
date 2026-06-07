@@ -26,6 +26,7 @@
       analyticsDescription: "Optional Google Analytics and Microsoft Clarity measurement. Disabled by default.",
       accept: "Accept All",
       reject: "Reject Non-Essential Cookies",
+      rejectAll: "Reject All",
       customize: "Customize Preferences",
       save: "Save Preferences"
     },
@@ -40,6 +41,7 @@
       analyticsDescription: "Optionale Messung mit Google Analytics und Microsoft Clarity. Standardmassig deaktiviert.",
       accept: "Alle akzeptieren",
       reject: "Nicht notwendige Cookies ablehnen",
+      rejectAll: "Alle ablehnen",
       customize: "Einstellungen anpassen",
       save: "Einstellungen speichern"
     },
@@ -54,6 +56,7 @@
       analyticsDescription: "Medicion opcional con Google Analytics y Microsoft Clarity. Desactivadas por defecto.",
       accept: "Aceptar todo",
       reject: "Rechazar cookies no esenciales",
+      rejectAll: "Rechazar todo",
       customize: "Personalizar preferencias",
       save: "Guardar preferencias"
     },
@@ -68,6 +71,7 @@
       analyticsDescription: "Medicao opcional com Google Analytics e Microsoft Clarity. Desativados por defeito.",
       accept: "Aceitar tudo",
       reject: "Rejeitar cookies nao essenciais",
+      rejectAll: "Rejeitar tudo",
       customize: "Personalizar preferencias",
       save: "Guardar preferencias"
     },
@@ -82,6 +86,7 @@
       analyticsDescription: "Mesure optionnelle avec Google Analytics et Microsoft Clarity. Desactivee par defaut.",
       accept: "Tout accepter",
       reject: "Refuser les cookies non essentiels",
+      rejectAll: "Tout refuser",
       customize: "Personnaliser",
       save: "Enregistrer"
     }
@@ -244,12 +249,20 @@
     document.querySelector(".cookie-consent")?.remove();
   }
 
-  function createConsentUi(mode = "banner") {
+  function getVisibleAnalyticsChoice() {
+    const toggle = document.querySelector("#analytics-cookie-toggle");
+    return toggle ? toggle.checked : undefined;
+  }
+
+  function createConsentUi(mode = "banner", draftAnalyticsChoice) {
     removeConsentUi();
 
     const consent = readConsent();
     const isPreferences = mode === "preferences";
     const copy = getConsentCopy();
+    const analyticsChecked = typeof draftAnalyticsChoice === "boolean"
+      ? draftAnalyticsChoice
+      : Boolean(consent?.analytics);
     const wrapper = document.createElement("section");
     wrapper.className = `cookie-consent${isPreferences ? " preferences-open" : ""}`;
     wrapper.setAttribute("role", "dialog");
@@ -264,7 +277,7 @@
           <h2 id="cookie-consent-title">${copy.title}</h2>
           <p id="cookie-consent-description">${copy.description}</p>
         </div>
-        <div class="cookie-consent-options" ${isPreferences ? "" : "hidden"}>
+        <div class="cookie-consent-options">
           <div class="cookie-row">
             <div>
               <strong>${copy.necessaryTitle}</strong>
@@ -277,23 +290,23 @@
               <strong>${copy.analyticsTitle}</strong>
               <p>${copy.analyticsDescription}</p>
             </span>
-            <input type="checkbox" id="analytics-cookie-toggle" ${consent?.analytics ? "checked" : ""}>
+            <input type="checkbox" id="analytics-cookie-toggle" ${analyticsChecked ? "checked" : ""} aria-label="${copy.analyticsTitle}">
           </label>
         </div>
         <div class="cookie-consent-actions">
-          <button class="primary-button" type="button" data-cookie-action="accept">${copy.accept}</button>
-          <button class="secondary-button" type="button" data-cookie-action="reject">${copy.reject}</button>
-          <button class="secondary-button" type="button" data-cookie-action="customize">${isPreferences ? copy.save : copy.customize}</button>
+          <button class="primary-button cookie-accept-button" type="button" data-cookie-action="accept">${copy.accept}</button>
+          <button class="secondary-button cookie-reject-button" type="button" data-cookie-action="reject">${copy.rejectAll}</button>
+          <button class="secondary-button cookie-save-button" type="button" data-cookie-action="save">${copy.save}</button>
         </div>
       </div>
     `;
 
     document.body.appendChild(wrapper);
 
-    const options = wrapper.querySelector(".cookie-consent-options");
     const analyticsToggle = wrapper.querySelector("#analytics-cookie-toggle");
 
     wrapper.querySelector('[data-cookie-action="accept"]').addEventListener("click", () => {
+      if (analyticsToggle) analyticsToggle.checked = true;
       writeConsent({ analytics: true });
       removeConsentUi();
       enableAnalyticsIfAllowed();
@@ -305,16 +318,8 @@
       enableAnalyticsIfAllowed();
     });
 
-    wrapper.querySelector('[data-cookie-action="customize"]').addEventListener("click", (event) => {
-      if (!isPreferences && options.hidden) {
-        options.hidden = false;
-        wrapper.classList.add("preferences-open");
-        event.currentTarget.textContent = copy.save;
-        analyticsToggle.focus();
-        return;
-      }
-
-      writeConsent({ analytics: analyticsToggle.checked });
+    wrapper.querySelector('[data-cookie-action="save"]').addEventListener("click", () => {
+      writeConsent({ analytics: Boolean(analyticsToggle?.checked) });
       removeConsentUi();
       enableAnalyticsIfAllowed();
     });
@@ -344,6 +349,17 @@
 
   window.addEventListener("hashchange", trackPageView);
   window.addEventListener("popstate", trackPageView);
+  window.addEventListener("urgentRecruiteLanguageChanged", () => {
+    const activeConsentUi = document.querySelector(".cookie-consent");
+    if (!activeConsentUi) return;
+
+    const draftAnalyticsChoice = getVisibleAnalyticsChoice();
+    createConsentUi(activeConsentUi.classList.contains("preferences-open") ? "preferences" : "banner", draftAnalyticsChoice);
+  });
+  window.addEventListener("storage", (event) => {
+    if (event.key !== "urgentRecruiteLanguage" || !document.querySelector(".cookie-consent")) return;
+    createConsentUi("preferences", getVisibleAnalyticsChoice());
+  });
 
   document.addEventListener("DOMContentLoaded", () => {
     bindPreferenceLinks();

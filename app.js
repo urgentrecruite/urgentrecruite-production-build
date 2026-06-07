@@ -1033,6 +1033,9 @@ function setLanguage(language) {
   setFormStep(currentFormStep);
   updateMenuState(siteHeader.classList.contains("open"));
   updateWordCount();
+  window.dispatchEvent(new CustomEvent("urgentRecruiteLanguageChanged", {
+    detail: { language: currentLanguage }
+  }));
 }
 
 function showToast(message) {
