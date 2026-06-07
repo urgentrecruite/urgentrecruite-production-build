@@ -249,6 +249,11 @@
           <textarea name="message" placeholder="A short note about your request"></textarea>
           <button class="primary-button" type="submit">Request Callback</button>
         </form>
+        <div class="contact-email-list" aria-label="Useful email addresses">
+          <a href="mailto:info@urgentrecruite.com"><span>General</span> info@urgentrecruite.com</a>
+          <a href="mailto:careers@urgentrecruite.com"><span>Candidates</span> careers@urgentrecruite.com</a>
+          <a href="mailto:recruitment@urgentrecruite.com"><span>Employers</span> recruitment@urgentrecruite.com</a>
+        </div>
       </section>
     </main>
 
@@ -352,8 +357,9 @@
           <label data-step="2">Job Title<input name="jobTitle" placeholder="e.g. Senior Product Manager"></label>
           <label data-step="2">Years Required<input name="yearsRequired" list="experience-year-options" placeholder="e.g. 5+ years"></label>
           <label data-step="2" id="request-pay-field">Annual Gross Pay
-            <span class="input-prefix"><span id="request-currency-code">USD</span><input name="annualPay" id="request-pay-input" inputmode="decimal" placeholder="$80,000"></span>
+            <span class="input-prefix"><span id="request-currency-code">USD</span><input name="annualPay" id="request-pay-input" inputmode="numeric" autocomplete="off" placeholder="$80,000"></span>
           </label>
+          <div class="wide field-error" id="request-pay-error" data-step="2" hidden>Annual gross pay is required and must contain at least 4 digits.</div>
           <label class="wide" data-step="2">Job Description<textarea name="jobDescription" placeholder="Describe the role, responsibilities, team context, reporting line, and what your organisation offers..."></textarea></label>
           <label class="wide" data-step="2">Job Specification<textarea name="jobSpecification" placeholder="List required skills, qualifications, tools, certifications, and experience..."></textarea></label>
           <label class="wide" data-step="3">Upload Existing JD or Specification<input name="jobDocument" type="file" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg,.txt,.rtf"></label>

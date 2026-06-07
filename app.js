@@ -34,6 +34,7 @@ const candidateSalaryInput = document.querySelector("#candidate-salary-input");
 const requestCurrencyCode = document.querySelector("#request-currency-code");
 const requestPayInput = document.querySelector("#request-pay-input");
 const requestPayField = document.querySelector("#request-pay-field");
+const requestPayError = document.querySelector("#request-pay-error");
 
 let currentFormStep = 1;
 let currentFormType = "cv";
@@ -1063,6 +1064,73 @@ function parseMoney(value) {
   return Number.isFinite(amount) ? amount : null;
 }
 
+function getGrossPayDigits() {
+  return String(requestPayInput?.value || "").replace(/\D/g, "");
+}
+
+function sanitizeGrossPayInput() {
+  if (!requestPayInput) return;
+  requestPayInput.value = getGrossPayDigits();
+  validateGrossPay(false);
+}
+
+function showGrossPayError(message = "") {
+  if (!requestPayError || !requestPayInput) return;
+  requestPayError.textContent = message;
+  requestPayError.hidden = !message;
+  requestPayInput.setCustomValidity(message);
+}
+
+function validateGrossPay(showMessage = true) {
+  if (!isHiringRequestType(currentFormType) || isInternRequestType(currentFormType)) {
+    showGrossPayError("");
+    return true;
+  }
+
+  const digits = getGrossPayDigits();
+  let message = "";
+  if (!digits) {
+    message = "Annual gross pay is required to calculate the shortlist access fee.";
+  } else if (digits.length < 4) {
+    message = "Annual gross pay must be numeric and contain at least 4 digits.";
+  }
+
+  showGrossPayError(showMessage ? message : "");
+  if (message && showMessage) showToast(message);
+  return !message;
+}
+
+function setRequiredFields(type = currentFormType) {
+  const requiredByType = {
+    cv: ["fullName", "email", "country", "phone", "field", "experience", "cvFile"],
+    intent: ["fullName", "email", "country", "phone", "field", "experience", "cvFile"],
+    shortlist: ["contactName", "workEmail", "companyName", "industry", "jobTitle", "yearsRequired", "annualPay"],
+    "intern-request": ["contactName", "workEmail", "companyName", "industry", "jobTitle", "yearsRequired"]
+  };
+
+  applicationForm.querySelectorAll("[name]").forEach((field) => {
+    if (field.type !== "hidden") field.required = false;
+  });
+
+  (requiredByType[type] || []).forEach((name) => {
+    const field = applicationForm.elements[name];
+    if (field) field.required = true;
+  });
+}
+
+function validateCurrentStep() {
+  const fields = Array.from(applicationForm.querySelectorAll(`[data-step="${currentFormStep}"] input, [data-step="${currentFormStep}"] textarea`))
+    .filter((field) => field.required);
+
+  const invalidField = fields.find((field) => !field.checkValidity());
+  if (invalidField) {
+    invalidField.reportValidity();
+    return false;
+  }
+
+  return true;
+}
+
 function getSelectedCountryMeta() {
   return getCountryMeta(countryInput.value) || countries.find((country) => country.currency === "USD") || countries[0];
 }
@@ -1208,6 +1276,8 @@ function openForm(type) {
   if (requestPayField) requestPayField.classList.toggle("hidden", isInternRequest);
   applicationForm.reset();
   sourceInput.value = type;
+  setRequiredFields(type);
+  showGrossPayError("");
   updatePhoneForCountry();
   updateCurrencyForCountry();
   resetFormSteps();
@@ -1342,6 +1412,33 @@ async function postOrStore(endpoint, payload, storageKey) {
   return response.json().catch(() => ({}));
 }
 
+async function sendEmailNotification(type, payload) {
+  const response = await fetch("/api/send-email", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ type, payload })
+  });
+
+  const result = await response.json().catch(() => ({}));
+  if (!response.ok || result.configured === false) {
+    throw new Error(result.error || "Email service is not configured.");
+  }
+
+  return result;
+}
+
+async function sendSubmissionConfirmation(payload) {
+  if (payload.source === "intent") {
+    return sendEmailNotification("intern-application-confirmation", payload);
+  }
+
+  if (payload.source === "cv") {
+    return sendEmailNotification("cv-submission-confirmation", payload);
+  }
+
+  return sendEmailNotification("employer-request-confirmation", payload);
+}
+
 async function saveApplicationToSupabase(formData, payload) {
   const client = getSupabaseClient();
   if (!client) return false;
@@ -1459,11 +1556,16 @@ populateDatalist("experience-year-options", experienceYears);
 populateDatalist("industry-options", industries);
 
 countryInput.addEventListener("input", updatePhoneForCountry);
+requestPayInput?.addEventListener("input", sanitizeGrossPayInput);
 summaryTextarea.addEventListener("input", updateWordCount);
 languageSelect.addEventListener("change", () => setLanguage(languageSelect.value));
 
 previousStepButton.addEventListener("click", () => setFormStep(currentFormStep - 1));
-nextStepButton.addEventListener("click", () => setFormStep(currentFormStep + 1));
+nextStepButton.addEventListener("click", () => {
+  if (!validateCurrentStep()) return;
+  if (currentFormStep === 2 && !validateGrossPay(true)) return;
+  setFormStep(currentFormStep + 1);
+});
 
 document.querySelector("#cancel-form").addEventListener("click", () => {
   formDialog.close();
@@ -1489,7 +1591,16 @@ generateBriefButton.addEventListener("click", () => {
 applicationForm.addEventListener("submit", async (event) => {
   event.preventDefault();
   if (currentFormStep < 3) {
+    if (!validateCurrentStep()) return;
+    if (currentFormStep === 2 && !validateGrossPay(true)) return;
     setFormStep(currentFormStep + 1);
+    return;
+  }
+
+  if (!validateCurrentStep()) return;
+  if (!validateGrossPay(true)) {
+    setFormStep(2);
+    requestPayInput?.focus();
     return;
   }
 
@@ -1505,6 +1616,7 @@ applicationForm.addEventListener("submit", async (event) => {
     if (!savedToSupabase) {
       await postOrStore(endpoint, payload, storageKey);
     }
+    sendSubmissionConfirmation(payload).catch(() => {});
     formDialog.close();
     trackAnalyticsEvent(isShortlist ? "employer_request_submission" : "candidate_application_submission", {
       submission_type: payload.source,
@@ -1529,6 +1641,7 @@ document.querySelector("#contact-form").addEventListener("submit", async (event)
     if (!savedToSupabase) {
       await postOrStore(CONFIG.contactEndpoint, payload, "urgentRecruiteContactRequests");
     }
+    sendEmailNotification("contact-confirmation", payload).catch(() => {});
     event.currentTarget.reset();
     trackAnalyticsEvent("contact_form_submission", {
       saved_to_supabase: savedToSupabase
