@@ -40,23 +40,207 @@ let currentFormStep = 1;
 let currentFormType = "cv";
 let currentLanguage = "en";
 
-const countries = [
-  { name: "Nigeria", dialCode: "+234", currency: "NGN", symbol: "₦", locale: "en-NG" },
-  { name: "Spain", dialCode: "+34", currency: "EUR", symbol: "€", locale: "es-ES" },
-  { name: "Portugal", dialCode: "+351", currency: "EUR", symbol: "€", locale: "pt-PT" },
-  { name: "Germany", dialCode: "+49", currency: "EUR", symbol: "€", locale: "de-DE" },
-  { name: "Kenya", dialCode: "+254", currency: "KES", symbol: "KSh", locale: "en-KE" },
-  { name: "United States", dialCode: "+1", currency: "USD", symbol: "$", locale: "en-US" },
-  { name: "United Kingdom", dialCode: "+44", currency: "GBP", symbol: "£", locale: "en-GB" },
-  { name: "Canada", dialCode: "+1", currency: "CAD", symbol: "$", locale: "en-CA" },
-  { name: "Ghana", dialCode: "+233", currency: "GHS", symbol: "GH₵", locale: "en-GH" },
-  { name: "South Africa", dialCode: "+27", currency: "ZAR", symbol: "R", locale: "en-ZA" },
-  { name: "Ireland", dialCode: "+353", currency: "EUR", symbol: "€", locale: "en-IE" },
-  { name: "France", dialCode: "+33", currency: "EUR", symbol: "€", locale: "fr-FR" },
-  { name: "Netherlands", dialCode: "+31", currency: "EUR", symbol: "€", locale: "nl-NL" },
-  { name: "Italy", dialCode: "+39", currency: "EUR", symbol: "€", locale: "it-IT" },
-  { name: "United Arab Emirates", dialCode: "+971", currency: "AED", symbol: "AED", locale: "en-AE" }
-];
+const countries = `
+Nigeria|+234|NGN
+Spain|+34|EUR
+Portugal|+351|EUR
+Germany|+49|EUR
+Kenya|+254|KES
+Afghanistan|+93|AFN
+Albania|+355|ALL
+Algeria|+213|DZD
+Andorra|+376|EUR
+Angola|+244|AOA
+Antigua and Barbuda|+1-268|XCD
+Argentina|+54|ARS
+Armenia|+374|AMD
+Australia|+61|AUD
+Austria|+43|EUR
+Azerbaijan|+994|AZN
+Bahamas|+1-242|BSD
+Bahrain|+973|BHD
+Bangladesh|+880|BDT
+Barbados|+1-246|BBD
+Belarus|+375|BYN
+Belgium|+32|EUR
+Belize|+501|BZD
+Benin|+229|XOF
+Bhutan|+975|BTN
+Bolivia|+591|BOB
+Bosnia and Herzegovina|+387|BAM
+Botswana|+267|BWP
+Brazil|+55|BRL
+Brunei|+673|BND
+Bulgaria|+359|BGN
+Burkina Faso|+226|XOF
+Burundi|+257|BIF
+Cabo Verde|+238|CVE
+Cambodia|+855|KHR
+Cameroon|+237|XAF
+Canada|+1|CAD
+Central African Republic|+236|XAF
+Chad|+235|XAF
+Chile|+56|CLP
+China|+86|CNY
+Colombia|+57|COP
+Comoros|+269|KMF
+Congo|+242|XAF
+Costa Rica|+506|CRC
+Cote d'Ivoire|+225|XOF
+Croatia|+385|EUR
+Cuba|+53|CUP
+Cyprus|+357|EUR
+Czech Republic|+420|CZK
+Democratic Republic of the Congo|+243|CDF
+Denmark|+45|DKK
+Djibouti|+253|DJF
+Dominica|+1-767|XCD
+Dominican Republic|+1-809|DOP
+Ecuador|+593|USD
+Egypt|+20|EGP
+El Salvador|+503|USD
+Equatorial Guinea|+240|XAF
+Eritrea|+291|ERN
+Estonia|+372|EUR
+Eswatini|+268|SZL
+Ethiopia|+251|ETB
+Fiji|+679|FJD
+Finland|+358|EUR
+France|+33|EUR
+Gabon|+241|XAF
+Gambia|+220|GMD
+Georgia|+995|GEL
+Ghana|+233|GHS
+Greece|+30|EUR
+Grenada|+1-473|XCD
+Guatemala|+502|GTQ
+Guinea|+224|GNF
+Guinea-Bissau|+245|XOF
+Guyana|+592|GYD
+Haiti|+509|HTG
+Honduras|+504|HNL
+Hungary|+36|HUF
+Iceland|+354|ISK
+India|+91|INR
+Indonesia|+62|IDR
+Iran|+98|IRR
+Iraq|+964|IQD
+Ireland|+353|EUR
+Israel|+972|ILS
+Italy|+39|EUR
+Jamaica|+1-876|JMD
+Japan|+81|JPY
+Jordan|+962|JOD
+Kazakhstan|+7|KZT
+Kiribati|+686|AUD
+Kuwait|+965|KWD
+Kyrgyzstan|+996|KGS
+Laos|+856|LAK
+Latvia|+371|EUR
+Lebanon|+961|LBP
+Lesotho|+266|LSL
+Liberia|+231|LRD
+Libya|+218|LYD
+Liechtenstein|+423|CHF
+Lithuania|+370|EUR
+Luxembourg|+352|EUR
+Madagascar|+261|MGA
+Malawi|+265|MWK
+Malaysia|+60|MYR
+Maldives|+960|MVR
+Mali|+223|XOF
+Malta|+356|EUR
+Marshall Islands|+692|USD
+Mauritania|+222|MRU
+Mauritius|+230|MUR
+Mexico|+52|MXN
+Micronesia|+691|USD
+Moldova|+373|MDL
+Monaco|+377|EUR
+Mongolia|+976|MNT
+Montenegro|+382|EUR
+Morocco|+212|MAD
+Mozambique|+258|MZN
+Myanmar|+95|MMK
+Namibia|+264|NAD
+Nauru|+674|AUD
+Nepal|+977|NPR
+Netherlands|+31|EUR
+New Zealand|+64|NZD
+Nicaragua|+505|NIO
+Niger|+227|XOF
+North Korea|+850|KPW
+North Macedonia|+389|MKD
+Norway|+47|NOK
+Oman|+968|OMR
+Pakistan|+92|PKR
+Palau|+680|USD
+Palestine|+970|ILS
+Panama|+507|PAB
+Papua New Guinea|+675|PGK
+Paraguay|+595|PYG
+Peru|+51|PEN
+Philippines|+63|PHP
+Poland|+48|PLN
+Qatar|+974|QAR
+Romania|+40|RON
+Russia|+7|RUB
+Rwanda|+250|RWF
+Saint Kitts and Nevis|+1-869|XCD
+Saint Lucia|+1-758|XCD
+Saint Vincent and the Grenadines|+1-784|XCD
+Samoa|+685|WST
+San Marino|+378|EUR
+Sao Tome and Principe|+239|STN
+Saudi Arabia|+966|SAR
+Senegal|+221|XOF
+Serbia|+381|RSD
+Seychelles|+248|SCR
+Sierra Leone|+232|SLE
+Singapore|+65|SGD
+Slovakia|+421|EUR
+Slovenia|+386|EUR
+Solomon Islands|+677|SBD
+Somalia|+252|SOS
+South Africa|+27|ZAR
+South Korea|+82|KRW
+South Sudan|+211|SSP
+Sri Lanka|+94|LKR
+Sudan|+249|SDG
+Suriname|+597|SRD
+Sweden|+46|SEK
+Switzerland|+41|CHF
+Syria|+963|SYP
+Taiwan|+886|TWD
+Tajikistan|+992|TJS
+Tanzania|+255|TZS
+Thailand|+66|THB
+Timor-Leste|+670|USD
+Togo|+228|XOF
+Tonga|+676|TOP
+Trinidad and Tobago|+1-868|TTD
+Tunisia|+216|TND
+Turkey|+90|TRY
+Turkmenistan|+993|TMT
+Tuvalu|+688|AUD
+Uganda|+256|UGX
+Ukraine|+380|UAH
+United Arab Emirates|+971|AED
+United Kingdom|+44|GBP
+United States|+1|USD
+Uruguay|+598|UYU
+Uzbekistan|+998|UZS
+Vanuatu|+678|VUV
+Vatican City|+39|EUR
+Venezuela|+58|VES
+Vietnam|+84|VND
+Yemen|+967|YER
+Zambia|+260|ZMW
+Zimbabwe|+263|ZWL
+`.trim().split("\n").map((row) => {
+  const [name, dialCode, currency] = row.split("|");
+  return { name, dialCode, currency, symbol: currency, locale: "en-US" };
+});
 
 const experienceFields = [
   "Accounting and Finance",
@@ -265,7 +449,7 @@ const translations = {
     "Profile submitted successfully. Our team will review your CV and prepare it for suitable opportunities.": "Profil erfolgreich eingereicht. Unser Team pruft Ihren Lebenslauf und bereitet ihn fur passende Chancen vor.",
     "Could not submit yet. Please check Supabase setup.": "Die Ubermittlung war noch nicht moglich. Bitte prufen Sie die Supabase-Einrichtung.",
     "Callback request received.": "Ruckrufanfrage erhalten.",
-    "Could not submit contact request yet.": "Die Kontaktanfrage konnte noch nicht ubermittelt werden.",
+    "We could not send your callback request email yet. Please try again.": "Wir konnten Ihre Rueckrufanfrage noch nicht senden. Bitte versuchen Sie es erneut.",
     "Let us meet you": "Lernen wir Sie kennen",
     "Your career interests": "Ihre Karriereinteressen",
     "Your internship interest": "Ihr Praktikumsinteresse",
@@ -400,7 +584,7 @@ const translations = {
     "Profile submitted successfully. Our team will review your CV and prepare it for suitable opportunities.": "Perfil enviado correctamente. Nuestro equipo revisara tu CV y lo preparara para oportunidades adecuadas.",
     "Could not submit yet. Please check Supabase setup.": "Aun no se pudo enviar. Revise la configuracion de Supabase.",
     "Callback request received.": "Solicitud de llamada recibida.",
-    "Could not submit contact request yet.": "Aun no se pudo enviar la solicitud de contacto.",
+    "We could not send your callback request email yet. Please try again.": "No pudimos enviar su solicitud de devolucion de llamada. Intente de nuevo.",
     "Let us meet you": "Queremos conocerte",
     "Your career interests": "Tus intereses profesionales",
     "Your internship interest": "Tu interes de practicas",
@@ -535,7 +719,7 @@ const translations = {
     "Profile submitted successfully. Our team will review your CV and prepare it for suitable opportunities.": "Perfil enviado com sucesso. A nossa equipa revira o seu CV e prepara-lo-a para oportunidades adequadas.",
     "Could not submit yet. Please check Supabase setup.": "Ainda nao foi possivel enviar. Verifique a configuracao do Supabase.",
     "Callback request received.": "Pedido de contacto recebido.",
-    "Could not submit contact request yet.": "Ainda nao foi possivel enviar o pedido de contacto.",
+    "We could not send your callback request email yet. Please try again.": "Ainda nao foi possivel enviar o pedido de contacto. Tente novamente.",
     "Let us meet you": "Vamos conhecer voce",
     "Your career interests": "Os seus interesses profissionais",
     "Your internship interest": "O seu interesse de estagio",
@@ -670,7 +854,7 @@ const translations = {
     "Profile submitted successfully. Our team will review your CV and prepare it for suitable opportunities.": "Profil envoye avec succes. Notre equipe examinera votre CV et le preparera pour des opportunites adaptees.",
     "Could not submit yet. Please check Supabase setup.": "Impossible d'envoyer pour le moment. Verifiez la configuration Supabase.",
     "Callback request received.": "Demande de rappel recue.",
-    "Could not submit contact request yet.": "Impossible d'envoyer la demande de contact pour le moment.",
+    "We could not send your callback request email yet. Please try again.": "Impossible d'envoyer votre demande de rappel pour le moment. Veuillez reessayer.",
     "Let us meet you": "Faisons connaissance",
     "Your career interests": "Vos interets professionnels",
     "Your internship interest": "Votre interet pour un stage",
@@ -1122,6 +1306,10 @@ function validateCurrentStep() {
   const fields = Array.from(applicationForm.querySelectorAll(`[data-step="${currentFormStep}"] input, [data-step="${currentFormStep}"] textarea`))
     .filter((field) => field.required);
 
+  if (currentFormStep === 1 && !isHiringRequestType(currentFormType) && !validatePhoneForCountry(true)) {
+    return false;
+  }
+
   const invalidField = fields.find((field) => !field.checkValidity());
   if (invalidField) {
     invalidField.reportValidity();
@@ -1132,18 +1320,24 @@ function validateCurrentStep() {
 }
 
 function getSelectedCountryMeta() {
-  return getCountryMeta(countryInput.value) || countries.find((country) => country.currency === "USD") || countries[0];
+  return getCountryMeta(countryInput.value) || countries[0];
 }
 
 function formatCurrency(value, country = getSelectedCountryMeta()) {
   const amount = parseMoney(value);
   if (!amount) return t("competitive compensation");
 
-  return new Intl.NumberFormat(country.locale || "en-US", {
-    style: "currency",
-    currency: country.currency || "USD",
-    maximumFractionDigits: 0
-  }).format(amount);
+  try {
+    return new Intl.NumberFormat(country.locale || "en-US", {
+      style: "currency",
+      currency: country.currency || "USD",
+      maximumFractionDigits: 0
+    }).format(amount);
+  } catch {
+    return `${country.currency || "USD"} ${new Intl.NumberFormat("en-US", {
+      maximumFractionDigits: 0
+    }).format(amount)}`;
+  }
 }
 
 function countWords(value) {
@@ -1168,14 +1362,51 @@ function getCountryMeta(name) {
 
 function updatePhoneForCountry() {
   const country = getCountryMeta(countryInput.value);
-  const dialCode = country?.dialCode || "+1";
+  if (!country) {
+    phoneInput.placeholder = t("Select a country first");
+    phoneInput.setCustomValidity("");
+    updateCurrencyForCountry();
+    return;
+  }
+
+  const dialCode = country.dialCode;
   phoneInput.placeholder = `${dialCode} ${t("phone number")}`;
 
-  if (!phoneInput.value.trim()) {
+  const value = phoneInput.value.trim();
+  const onlyDialCode = countries.some((item) => value === item.dialCode);
+  if (!value || onlyDialCode) {
     phoneInput.value = `${dialCode} `;
   }
 
+  validatePhoneForCountry(false);
   updateCurrencyForCountry();
+}
+
+function validatePhoneForCountry(showMessage = true) {
+  if (isHiringRequestType(currentFormType)) {
+    phoneInput.setCustomValidity("");
+    return true;
+  }
+
+  const country = getCountryMeta(countryInput.value);
+  const value = phoneInput.value.trim();
+  let message = "";
+
+  if (!country) {
+    message = "Please select your country before entering your phone number.";
+  } else if (!value.startsWith(country.dialCode)) {
+    message = `Phone number must start with ${country.dialCode} for ${country.name}.`;
+  } else if (value.replace(/\D/g, "").length <= country.dialCode.replace(/\D/g, "").length + 5) {
+    message = "Please enter a complete phone number, not only the country code.";
+  }
+
+  phoneInput.setCustomValidity(message);
+  if (message && showMessage) {
+    phoneInput.reportValidity();
+    showToast(message);
+  }
+
+  return !message;
 }
 
 function updateCurrencyForCountry() {
@@ -1427,6 +1658,35 @@ async function sendEmailNotification(type, payload) {
   return result;
 }
 
+function getSubmissionEmail(payload) {
+  return String(payload.workEmail || payload.email || "").trim().toLowerCase();
+}
+
+function getSubmissionRateType(source) {
+  if (source === "intent") return "intern";
+  if (source === "cv") return "cv";
+  if (source === "contact") return "contact";
+  if (isHiringRequestType(source)) return "employer";
+  return source || "general";
+}
+
+function getDailySubmissionKey(source, email) {
+  return `urgentRecruiteSubmissionLimit:${new Date().toISOString().slice(0, 10)}:${getSubmissionRateType(source)}:${email}`;
+}
+
+function canSubmitToday(source, email) {
+  if (!email) return true;
+  const key = getDailySubmissionKey(source, email);
+  return Number(window.localStorage.getItem(key) || 0) < 3;
+}
+
+function registerSubmissionToday(source, email) {
+  if (!email) return;
+  const key = getDailySubmissionKey(source, email);
+  const nextCount = Number(window.localStorage.getItem(key) || 0) + 1;
+  window.localStorage.setItem(key, String(nextCount));
+}
+
 async function sendSubmissionConfirmation(payload) {
   if (payload.source === "intent") {
     return sendEmailNotification("intern-application-confirmation", payload);
@@ -1556,6 +1816,7 @@ populateDatalist("experience-year-options", experienceYears);
 populateDatalist("industry-options", industries);
 
 countryInput.addEventListener("input", updatePhoneForCountry);
+phoneInput.addEventListener("input", () => validatePhoneForCountry(false));
 requestPayInput?.addEventListener("input", sanitizeGrossPayInput);
 summaryTextarea.addEventListener("input", updateWordCount);
 languageSelect.addEventListener("change", () => setLanguage(languageSelect.value));
@@ -1610,13 +1871,26 @@ applicationForm.addEventListener("submit", async (event) => {
   const isInternRequest = isInternRequestType(payload.source);
   const endpoint = isShortlist ? CONFIG.shortlistEndpoint : CONFIG.profileEndpoint;
   const storageKey = isShortlist ? "urgentRecruiteShortlistRequests" : "urgentRecruiteProfiles";
+  const submitterEmail = getSubmissionEmail(payload);
+
+  if (!canSubmitToday(payload.source, submitterEmail)) {
+    showToast("This email address has reached the daily submission limit for this form.");
+    return;
+  }
 
   try {
     const savedToSupabase = await saveApplicationToSupabase(formData, payload);
     if (!savedToSupabase) {
       await postOrStore(endpoint, payload, storageKey);
     }
-    sendSubmissionConfirmation(payload).catch(() => {});
+    try {
+      await sendSubmissionConfirmation(payload);
+    } catch (emailError) {
+      showToast(emailError.message || "Your request was saved, but the confirmation email could not be sent.");
+      return;
+    }
+    registerSubmissionToday(payload.source, submitterEmail);
+    applicationForm.reset();
     formDialog.close();
     trackAnalyticsEvent(isShortlist ? "employer_request_submission" : "candidate_application_submission", {
       submission_type: payload.source,
@@ -1634,21 +1908,36 @@ applicationForm.addEventListener("submit", async (event) => {
 
 document.querySelector("#contact-form").addEventListener("submit", async (event) => {
   event.preventDefault();
-  const payload = toPayload(event.currentTarget);
+  const form = event.currentTarget;
+  const payload = { ...toPayload(form), source: "contact" };
+  const submitterEmail = getSubmissionEmail(payload);
+
+  if (!canSubmitToday("contact", submitterEmail)) {
+    showToast("This email address has reached the daily submission limit for this form.");
+    return;
+  }
 
   try {
-    const savedToSupabase = await saveContactToSupabase(payload);
-    if (!savedToSupabase) {
+    let savedToSupabase = false;
+    let savedLocally = false;
+    try {
+      savedToSupabase = await saveContactToSupabase(payload);
+    } catch {
+      await postOrStore(CONFIG.contactEndpoint, payload, "urgentRecruiteContactRequests");
+      savedLocally = true;
+    }
+    if (!savedToSupabase && !savedLocally) {
       await postOrStore(CONFIG.contactEndpoint, payload, "urgentRecruiteContactRequests");
     }
-    sendEmailNotification("contact-confirmation", payload).catch(() => {});
-    event.currentTarget.reset();
+    await sendEmailNotification("contact-confirmation", payload);
+    registerSubmissionToday("contact", submitterEmail);
+    form.reset();
     trackAnalyticsEvent("contact_form_submission", {
       saved_to_supabase: savedToSupabase
     });
-    showToast("Callback request received.");
+    showToast("Thank you for your request to speak with us. Our contact person will communicate with you soon.");
   } catch (error) {
-    showToast("Could not submit contact request yet.");
+    showToast(error.message || "We could not send your callback request email yet. Please try again.");
   }
 });
 

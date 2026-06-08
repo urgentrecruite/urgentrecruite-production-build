@@ -12,6 +12,10 @@ const SENDERS = {
   recruitment: process.env.URGENT_RECRUITE_RECRUITMENT_SENDER || "Urgent Recruite Recruitment <recruitment@urgentrecruite.com>"
 };
 
+const DAILY_FORM_LIMIT = 3;
+const rateLimitStore = globalThis.__urgentRecruiteRateLimitStore || new Map();
+globalThis.__urgentRecruiteRateLimitStore = rateLimitStore;
+
 function clean(value) {
   return String(value || "").replace(/\s+/g, " ").trim();
 }
@@ -33,6 +37,33 @@ function parseBody(request) {
     }
   }
   return request.body;
+}
+
+function todayKey() {
+  return new Date().toISOString().slice(0, 10);
+}
+
+function getRateLimitTarget(type, payload = {}) {
+  if (type === "contact-confirmation") return { form: "contact", email: clean(payload.email).toLowerCase() };
+  if (type === "cv-submission-confirmation") return { form: "cv", email: clean(payload.email).toLowerCase() };
+  if (type === "intern-application-confirmation") return { form: "intern", email: clean(payload.email).toLowerCase() };
+  if (type === "employer-request-confirmation") return { form: "employer", email: clean(payload.workEmail || payload.email).toLowerCase() };
+  if (type === "profile-request") return { form: "profile-request", email: clean(payload.clientEmail).toLowerCase() };
+  return null;
+}
+
+function checkRateLimit(type, payload = {}) {
+  const target = getRateLimitTarget(type, payload);
+  if (!target?.email) return;
+
+  const key = `${todayKey()}|${target.form}|${target.email}`;
+  const count = rateLimitStore.get(key) || 0;
+  if (count >= DAILY_FORM_LIMIT) {
+    const error = new Error("This email address has reached the daily submission limit for this form.");
+    error.statusCode = 429;
+    throw error;
+  }
+  rateLimitStore.set(key, count + 1);
 }
 
 async function sendResendEmail(apiKey, email) {
@@ -63,7 +94,7 @@ function buildEmails(type, payload = {}) {
       from: SENDERS.info,
       to: clean(payload.email),
       subject: "We received your message",
-      text: `Hello ${name},\n\nThank you for contacting Urgent Recruite. We have received your message and our team will respond as soon as possible.\n\nThe right people, exactly when you need them.\n\nUrgent Recruite`
+      text: `Hello ${name},\n\nThank you for your request to speak with us. Our contact person will communicate with you soon.\n\nUrgent Recruite`
     }, {
       from: SENDERS.info,
       to: DEFAULT_RECIPIENTS.info,
@@ -77,7 +108,7 @@ function buildEmails(type, payload = {}) {
       from: SENDERS.careers,
       to: clean(payload.email),
       subject: "Your profile has been received",
-      text: `Hello ${name},\n\nThank you for submitting your CV to Urgent Recruite. Our team will review your profile and contact you if there is a suitable opportunity.\n\nUrgent Recruite Careers`
+      text: `Hello ${name},\n\nThank you for submitting your profile. We will contact you as soon as we find an organization requesting your profile or expertise.\n\nUrgent Recruite Careers`
     }];
   }
 
@@ -86,7 +117,7 @@ function buildEmails(type, payload = {}) {
       from: SENDERS.intern,
       to: clean(payload.email),
       subject: "Your intern profile has been received",
-      text: `Hello ${name},\n\nThank you for submitting your intern profile to Urgent Recruite. Our team will review your details for suitable intern opportunities.\n\nUrgent Recruite Interns`
+      text: `Hello ${name},\n\nThank you for submitting your intern profile. Our intern placement team will review your interests, field, and CV, and we will contact you when we find an organization looking for an intern profile like yours.\n\nUrgent Recruite Interns`
     }];
   }
 
@@ -95,7 +126,7 @@ function buildEmails(type, payload = {}) {
       from: SENDERS.recruitment,
       to: clean(payload.workEmail || payload.email),
       subject: "We received your shortlist request",
-      text: `Hello ${name},\n\nThank you for submitting a shortlist request for ${company}. We have received the role details for ${jobTitle} and our recruitment team will begin reviewing the request.\n\nUrgent Recruite Recruitment`
+      text: `Hello ${name},\n\nThank you for requesting a shortlist for ${company}. We have received the role details for ${jobTitle}, and our recruitment team will review the request and prepare the next step.\n\nUrgent Recruite Recruitment`
     }, {
       from: SENDERS.recruitment,
       to: DEFAULT_RECIPIENTS.recruitment,
@@ -109,7 +140,7 @@ function buildEmails(type, payload = {}) {
       from: SENDERS.recruitment,
       to: clean(payload.to || payload.clientEmail),
       subject: `Secure shortlist link for ${company}`,
-      text: `Hello,\n\nYour secure shortlist link is ready for ${company}.\n\nShortlist: ${clean(payload.shortlistTitle)}\nLink: ${clean(payload.secureLink)}\n\nContact details remain protected inside the Urgent Recruite workflow.\n\nUrgent Recruite Recruitment`
+      text: `Dear ${company} Team,\n\nThank you for requesting a shortlist from Urgent Recruite.\n\nKindly note that we hold candidate profiles in high confidence. In line with our policy, candidate contact details remain hidden until you request specific profiles.\n\nPlease use the secure link below to review the redacted shortlist, view candidate experience summaries, and indicate the profiles you are interested in.\n\n${clean(payload.secureLink)}\n\nKind regards,\nUrgent Recruite Team`
     }];
   }
 
@@ -160,6 +191,13 @@ module.exports = async function handler(request, response) {
   }
 
   const { type, payload } = parseBody(request);
+  try {
+    checkRateLimit(type, payload);
+  } catch (error) {
+    response.status(error.statusCode || 429).json({ error: error.message });
+    return;
+  }
+
   const emails = buildEmails(type, payload).filter((email) => clean(email.to));
 
   if (!emails.length) {

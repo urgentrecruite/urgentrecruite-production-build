@@ -458,32 +458,6 @@ h3 {
   gap: 12px;
 }
 
-.contact-email-list {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
-  margin-top: 14px;
-}
-
-.contact-email-list a {
-  display: grid;
-  gap: 3px;
-  min-width: 0;
-  padding: 12px;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  color: var(--muted);
-  background: rgba(255, 255, 255, 0.72);
-  font-size: 13px;
-  font-weight: 700;
-}
-
-.contact-email-list span {
-  color: var(--ink);
-  font-size: 12px;
-  font-weight: 900;
-}
-
 input,
 textarea {
   width: 100%;
