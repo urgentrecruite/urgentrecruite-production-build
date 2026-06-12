@@ -1688,14 +1688,7 @@ function registerSubmissionToday(source, email) {
 }
 
 async function sendSubmissionConfirmation(payload) {
-  if (payload.source === "intent") {
-    return sendEmailNotification("intern-application-confirmation", payload);
-  }
-
-  if (payload.source === "cv") {
-    return sendEmailNotification("cv-submission-confirmation", payload);
-  }
-
+  if (!isHiringRequestType(payload.source)) return null;
   return sendEmailNotification("employer-request-confirmation", payload);
 }
 
@@ -1883,11 +1876,13 @@ applicationForm.addEventListener("submit", async (event) => {
     if (!savedToSupabase) {
       await postOrStore(endpoint, payload, storageKey);
     }
-    try {
-      await sendSubmissionConfirmation(payload);
-    } catch (emailError) {
-      showToast(emailError.message || "Your request was saved, but the confirmation email could not be sent.");
-      return;
+    if (isShortlist) {
+      try {
+        await sendSubmissionConfirmation(payload);
+      } catch (emailError) {
+        showToast(emailError.message || "Your request was saved, but the confirmation email could not be sent.");
+        return;
+      }
     }
     registerSubmissionToday(payload.source, submitterEmail);
     applicationForm.reset();
