@@ -121,6 +121,7 @@ function getRateLimitTarget(type, payload = {}) {
   if (type === "intern-application-confirmation") return { form: "intern", email: clean(payload.email).toLowerCase() };
   if (type === "employer-request-confirmation") return { form: "employer", email: clean(payload.workEmail || payload.email).toLowerCase() };
   if (type === "profile-request") return { form: "profile-request", email: clean(payload.clientEmail).toLowerCase() };
+  if (type === "pre-interview-request") return { form: "pre-interview", email: clean(payload.email).toLowerCase() };
   return null;
 }
 
@@ -194,6 +195,15 @@ function buildEmails(type, payload = {}) {
       to: DEFAULT_RECIPIENTS.recruitment,
       subject: `New shortlist request from ${company}`,
       text: `New employer request\n\nCompany: ${company}\nContact: ${name}\nEmail: ${clean(payload.workEmail || payload.email)}\nRole: ${jobTitle}\nRequest type: ${clean(payload.source || "shortlist")}`
+    }];
+  }
+
+  if (type === "pre-interview-request") {
+    return [{
+      from: SENDERS.info,
+      to: DEFAULT_RECIPIENTS.info,
+      subject: "Pre-interview request",
+      text: `Pre-interview request\n\nName: ${name}\nEmail: ${clean(payload.email)}\nPhone: ${clean(payload.phone)}\nIndustry: ${clean(payload.industry)}\nTarget role: ${clean(payload.targetRole)}\nInterview or assessment date: ${clean(payload.interviewDate || "Not provided")}\nSupport type: ${clean(payload.supportType)}\nSelected readiness pack: ${clean(payload.selectedPack || "Not provided")}\nMessage: ${clean(payload.message || "Not provided")}`
     }];
   }
 

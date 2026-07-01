@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="UrgentRecruite Tests helps candidates prepare for aptitude assessments, role-based scenarios, interview readiness and pre-interview sessions with the UrgentRecruite team.">
+    <meta name="robots" content="index, follow, max-image-preview:large">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="canonical" href="https://www.urgentrecruite.com/tests.html">
+    <link rel="icon" href="https://www.urgentrecruite.com/favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://www.urgentrecruite.com/assets/favicon-32x32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://www.urgentrecruite.com/assets/apple-touch-icon.png">
+    <title>UrgentRecruite Tests | Interview &amp; Assessment Readiness</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body class="tests-page">
+    <header class="site-header tests-page-header">
+      <a class="brand" href="index.html" aria-label="UrgentRecruite home">
+        <img src="assets/logo.jpeg" alt="UrgentRecruite logo">
+      </a>
+      <nav class="nav-links" aria-label="Tests navigation">
+        <a href="index.html">Home</a>
+        <a href="#readiness-check">Readiness check</a>
+        <a href="#pre-interview">Pre-interview session</a>
+        <a href="index.html#contact">Contact</a>
+      </nav>
+      <div class="header-actions">
+        <a class="secondary-button" href="index.html">Back to homepage</a>
+        <a class="primary-button" href="#pre-interview">Request session</a>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero tests-page-hero" id="home">
+        <div class="hero-content">
+          <p class="eyebrow">UrgentRecruite Tests</p>
+          <h1>Prepare for assessments and interviews before the real day.</h1>
+          <p class="hero-copy">Choose an industry-based readiness pack, complete a short diagnostic, and request a pre-interview session with the UrgentRecruite team when you want focused support.</p>
+          <div class="hero-actions">
+            <a class="primary-button large" href="#readiness-check">Start readiness check</a>
+            <a class="secondary-button large" href="#pre-interview">Request pre-interview session</a>
+          </div>
+        </div>
+        <div class="hero-panel" aria-label="Assessment readiness model">
+          <div>
+            <strong>5</strong>
+            <span>Launch industries</span>
+          </div>
+          <div>
+            <strong>25</strong>
+            <span>Starter diagnostic questions</span>
+          </div>
+          <div>
+            <strong>5</strong>
+            <span>Assessment signals</span>
+          </div>
+          <div>
+            <strong>1:1</strong>
+            <span>Pre-interview support request</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="section tests-section" id="readiness-check">
+        <div class="section-heading">
+          <p class="eyebrow">Assessment readiness hub</p>
+          <h2>Role-based practice, not random quiz noise.</h2>
+          <p>Each pack combines aptitude, role knowledge, workplace judgement, practical scenarios, and interview communication so candidates can prepare more intelligently.</p>
+        </div>
+
+        <div class="tests-hero-grid">
+          <article class="tests-panel tests-intro-card">
+            <span class="tests-badge">Candidate readiness hub</span>
+            <h3>Built around real recruitment signals.</h3>
+            <p>Select a flagship role, answer five targeted diagnostic questions, and use the readiness feedback to decide whether you need more preparation or a guided session.</p>
+            <div class="tests-pill-row" aria-label="Assessment categories">
+              <span>Aptitude</span>
+              <span>Job knowledge</span>
+              <span>Simulation</span>
+              <span>SJT</span>
+              <span>Interview</span>
+            </div>
+          </article>
+
+          <article class="tests-panel tests-score-preview" aria-label="Readiness score preview">
+            <div class="tests-score-ring">
+              <strong>82</strong>
+              <span>ReadyScore</span>
+            </div>
+            <div>
+              <h3>Readiness report</h3>
+              <p>After the diagnostic, candidates receive a score, competency notes, and a next-step recommendation.</p>
+            </div>
+          </article>
+        </div>
+
+        <div class="tests-builder" aria-label="Assessment readiness diagnostic">
+          <div class="tests-selector">
+            <div>
+              <p class="eyebrow">Step 1</p>
+              <h3>Select your target industry and role</h3>
+              <p>Start with one of the flagship packs. More roles can be added later using the same competency blueprint model.</p>
+            </div>
+            <label>Assessment pack
+              <select id="test-pack-select"></select>
+            </label>
+            <div class="tests-pack-summary" id="test-pack-summary" aria-live="polite"></div>
+            <button class="primary-button" type="button" id="start-test-button">Start readiness check</button>
+          </div>
+
+          <div class="tests-diagnostic" id="tests-diagnostic" hidden>
+            <div class="tests-diagnostic-header">
+              <div>
+                <p class="eyebrow">Step 2</p>
+                <h3 id="test-title">Readiness diagnostic</h3>
+              </div>
+              <span id="test-progress">Question 1-5 of 5</span>
+            </div>
+            <form id="test-form" class="test-form"></form>
+            <div class="tests-diagnostic-actions">
+              <button class="secondary-button" type="button" id="reset-test-button">Choose another pack</button>
+              <button class="primary-button" type="button" id="score-test-button">Get readiness report</button>
+            </div>
+          </div>
+
+          <div class="tests-report" id="tests-report" hidden aria-live="polite">
+            <div>
+              <p class="eyebrow">Step 3</p>
+              <h3>Your readiness report</h3>
+            </div>
+            <div class="tests-report-grid">
+              <div class="tests-score-card">
+                <strong id="tests-score-value">0%</strong>
+                <span id="tests-score-label">Developing readiness</span>
+              </div>
+              <div>
+                <p id="tests-score-copy">Complete the readiness check to receive feedback.</p>
+                <ul class="tests-feedback-list" id="tests-feedback-list"></ul>
+              </div>
+            </div>
+            <div class="tests-report-actions">
+              <button class="secondary-button" type="button" id="retake-test-button">Retake this pack</button>
+              <a class="primary-button" href="#pre-interview" id="mock-interview-button">Request pre-interview session</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="tests-industries">
+          <article>
+            <span>IT &amp; Digital</span>
+            <p>Service desk, ERP, web development, cybersecurity, support analysis.</p>
+          </article>
+          <article>
+            <span>Banking &amp; Finance</span>
+            <p>Operations, relationship management, compliance, branch leadership.</p>
+          </article>
+          <article>
+            <span>Healthcare</span>
+            <p>Nursing readiness, patient communication, prioritisation, ethics.</p>
+          </article>
+          <article>
+            <span>Engineering</span>
+            <p>Project judgement, safety awareness, technical reasoning, reporting.</p>
+          </article>
+          <article>
+            <span>Hospitality</span>
+            <p>Guest experience, service recovery, shift coordination, operations.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section section-muted pre-interview-section" id="pre-interview">
+        <div class="section-heading">
+          <p class="eyebrow">Pre-interview session</p>
+          <h2>Request focused preparation with the UrgentRecruite team.</h2>
+          <p>Share the role, interview stage, deadline and areas where you need support. The request goes directly to our info inbox with the title “Pre-interview request”.</p>
+        </div>
+        <form class="contact-form pre-interview-form" id="pre-interview-form">
+          <input name="name" placeholder="Your full name" required>
+          <input name="email" type="email" autocomplete="email" placeholder="Your email address" required>
+          <input name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+441234567890" pattern="\+[1-9][0-9\s().-]{7,20}" title="Use international format, for example +441234567890" required>
+          <input name="targetRole" placeholder="Target role or job title" required>
+          <input name="industry" placeholder="Industry, for example Banking, IT, Healthcare" required>
+          <input name="interviewDate" placeholder="Interview or assessment date, if known">
+          <select name="supportType" required>
+            <option value="">Select support type</option>
+            <option>Mock interview practice</option>
+            <option>Aptitude or assessment preparation</option>
+            <option>Role-specific scenario practice</option>
+            <option>CV/interview story preparation</option>
+          </select>
+          <textarea name="message" placeholder="Briefly describe the interview, assessment, employer, job link, or the areas you want help with."></textarea>
+          <button class="primary-button" type="submit">Send pre-interview request</button>
+        </form>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-brand">
+        <img src="assets/logo.jpeg" alt="UrgentRecruite logo">
+        <p class="footer-motto">The right people, exactly when you need them.</p>
+        <p>UrgentRecruite Tests helps candidates prepare for interviews, assessments and role-readiness conversations.</p>
+      </div>
+      <div class="footer-column">
+        <h3>Explore</h3>
+        <nav>
+          <a href="index.html">Home</a>
+          <a href="#readiness-check">Readiness check</a>
+          <a href="#pre-interview">Pre-interview session</a>
+          <a href="privacy.html">Privacy Policy</a>
+          <a href="terms.html">Terms &amp; Conditions</a>
+        </nav>
+      </div>
+    </footer>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script src="tests.js"></script>
+  </body>
+</html>

@@ -33,7 +33,8 @@ body {
 
 button,
 input,
-textarea {
+textarea,
+select {
   font: inherit;
 }
 
@@ -459,6 +460,31 @@ h3 {
   line-height: 1.65;
 }
 
+.tests-promo-section {
+  --grain-light: rgba(15, 118, 110, 0.08);
+  background: #ffffff;
+}
+
+.tests-promo-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 18px;
+  align-items: center;
+  max-width: 980px;
+  margin: 0 auto;
+  border: 1px solid rgba(15, 118, 110, 0.16);
+  border-radius: 8px;
+  padding: 24px;
+  background: linear-gradient(135deg, #ffffff, #f3fbf9);
+  box-shadow: 0 16px 38px rgba(15, 23, 42, 0.08);
+}
+
+.tests-promo-card p {
+  margin-bottom: 0;
+  color: var(--muted);
+  line-height: 1.65;
+}
+
 .tests-section {
   --grain-light: rgba(15, 118, 110, 0.1);
   background:
@@ -722,6 +748,20 @@ h3 {
   font-weight: 900;
 }
 
+.tests-page-hero {
+  min-height: calc(92vh - 72px);
+}
+
+.tests-page-header .header-actions a {
+  display: inline-flex;
+  align-items: center;
+}
+
+.pre-interview-form {
+  max-width: 760px;
+  margin: 0 auto;
+}
+
 .faq-list {
   max-width: 880px;
   margin: 0 auto;
@@ -742,7 +782,8 @@ h3 {
 }
 
 input,
-textarea {
+textarea,
+select {
   width: 100%;
   border: 1px solid var(--line);
   border-radius: 8px;
@@ -762,6 +803,11 @@ textarea:focus {
 textarea {
   min-height: 130px;
   resize: vertical;
+}
+
+select {
+  min-height: 48px;
+  font-weight: 700;
 }
 
 .footer {
@@ -1337,6 +1383,10 @@ label {
     grid-template-columns: 1fr;
   }
 
+  .tests-promo-card {
+    grid-template-columns: 1fr;
+  }
+
   .legal-content {
     padding-inline: 20px;
   }
@@ -1400,6 +1450,7 @@ label {
   }
 
   .tests-selector .primary-button,
+  .tests-promo-card .primary-button,
   .tests-diagnostic-actions button,
   .tests-report-actions button {
     width: 100%;
