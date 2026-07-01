@@ -87,6 +87,26 @@ a {
   color: var(--blue);
 }
 
+.nav-link-new {
+  position: relative;
+}
+
+.nav-link-new::after {
+  position: absolute;
+  top: -12px;
+  right: -18px;
+  border-radius: 999px;
+  padding: 2px 5px;
+  color: #ffffff;
+  background: var(--green);
+  font-size: 8px;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  content: "New";
+}
+
 .primary-button,
 .secondary-button,
 .text-button,
@@ -437,6 +457,269 @@ h3 {
   margin-bottom: 0;
   color: var(--muted);
   line-height: 1.65;
+}
+
+.tests-section {
+  --grain-light: rgba(15, 118, 110, 0.1);
+  background:
+    radial-gradient(circle at 14% 12%, rgba(29, 112, 241, 0.12), transparent 28%),
+    linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+}
+
+.tests-hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
+  gap: 16px;
+  max-width: 1120px;
+  margin: 0 auto 18px;
+}
+
+.tests-panel,
+.tests-builder,
+.tests-industries article {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 16px 38px rgba(15, 23, 42, 0.08);
+}
+
+.tests-panel {
+  padding: 24px;
+}
+
+.tests-panel p,
+.tests-selector p,
+.tests-pack-summary,
+.tests-diagnostic-header span,
+.tests-score-copy,
+.tests-industries p {
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.tests-badge {
+  display: inline-flex;
+  margin-bottom: 14px;
+  border-radius: 999px;
+  padding: 8px 12px;
+  color: var(--green);
+  background: rgba(15, 118, 110, 0.1);
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.tests-pill-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.tests-pill-row span,
+.tests-question-meta span {
+  display: inline-flex;
+  border-radius: 999px;
+  padding: 7px 10px;
+  color: #1558c0;
+  background: var(--blue-soft);
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.tests-score-preview {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 18px;
+  align-items: center;
+}
+
+.tests-score-ring {
+  display: grid;
+  place-items: center;
+  width: 132px;
+  height: 132px;
+  border: 10px solid rgba(29, 112, 241, 0.16);
+  border-top-color: var(--green);
+  border-radius: 50%;
+  color: var(--ink);
+  text-align: center;
+}
+
+.tests-score-ring strong {
+  font-size: 40px;
+  line-height: 1;
+}
+
+.tests-score-ring span {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.tests-builder {
+  display: grid;
+  gap: 18px;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 22px;
+}
+
+.tests-selector {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(240px, 0.8fr);
+  gap: 16px;
+  align-items: end;
+}
+
+.tests-selector label {
+  display: grid;
+  gap: 8px;
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.tests-selector select {
+  min-height: 48px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 0 12px;
+  color: var(--ink);
+  background: #ffffff;
+  font: inherit;
+  font-weight: 800;
+}
+
+.tests-pack-summary {
+  grid-column: 1 / -1;
+  border: 1px solid rgba(29, 112, 241, 0.16);
+  border-radius: 8px;
+  padding: 14px;
+  background: #f8fbff;
+}
+
+.tests-selector .primary-button {
+  width: fit-content;
+}
+
+.tests-diagnostic,
+.tests-report {
+  border-top: 1px solid var(--line);
+  padding-top: 18px;
+}
+
+.tests-diagnostic-header,
+.tests-diagnostic-actions,
+.tests-report-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.test-form {
+  display: grid;
+  gap: 14px;
+  margin: 16px 0;
+}
+
+.tests-question {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 18px;
+  background: #ffffff;
+}
+
+.tests-question h4 {
+  margin: 10px 0 14px;
+  font-size: 16px;
+  line-height: 1.45;
+}
+
+.tests-question-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tests-options {
+  display: grid;
+  gap: 10px;
+}
+
+.tests-options label {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 10px;
+  align-items: start;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 12px;
+  color: var(--muted);
+  background: #f8fafc;
+  cursor: pointer;
+}
+
+.tests-options input {
+  width: auto;
+  margin-top: 2px;
+  accent-color: var(--blue);
+}
+
+.tests-report-grid {
+  display: grid;
+  grid-template-columns: minmax(180px, 0.35fr) minmax(0, 1fr);
+  gap: 18px;
+  align-items: start;
+}
+
+.tests-score-card {
+  display: grid;
+  gap: 8px;
+  border-radius: 8px;
+  padding: 20px;
+  color: #ffffff;
+  background: linear-gradient(135deg, var(--blue), var(--green));
+}
+
+.tests-score-card strong {
+  font-size: 48px;
+  line-height: 1;
+}
+
+.tests-score-card span {
+  font-weight: 900;
+}
+
+.tests-feedback-list {
+  display: grid;
+  gap: 8px;
+  margin: 12px 0 0;
+  padding-left: 20px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.tests-industries {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 12px;
+  max-width: 1120px;
+  margin: 18px auto 0;
+}
+
+.tests-industries article {
+  padding: 16px;
+}
+
+.tests-industries span {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--ink);
+  font-weight: 900;
 }
 
 .faq-list {
@@ -1037,12 +1320,16 @@ label {
   .pricing-grid,
   .about-grid,
   .contact-section,
+  .tests-hero-grid,
+  .tests-selector,
+  .tests-report-grid,
   .footer {
     grid-template-columns: 1fr;
   }
 
   .steps,
-  .path-grid {
+  .path-grid,
+  .tests-industries {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -1098,8 +1385,24 @@ label {
 
   .steps,
   .path-grid,
+  .tests-industries,
   .form-grid {
     grid-template-columns: 1fr;
+  }
+
+  .tests-score-preview,
+  .tests-diagnostic-header,
+  .tests-diagnostic-actions,
+  .tests-report-actions {
+    align-items: stretch;
+    grid-template-columns: 1fr;
+    flex-direction: column;
+  }
+
+  .tests-selector .primary-button,
+  .tests-diagnostic-actions button,
+  .tests-report-actions button {
+    width: 100%;
   }
 
   .cookie-consent {

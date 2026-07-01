@@ -35,6 +35,22 @@ const requestCurrencyCode = document.querySelector("#request-currency-code");
 const requestPayInput = document.querySelector("#request-pay-input");
 const requestPayField = document.querySelector("#request-pay-field");
 const requestPayError = document.querySelector("#request-pay-error");
+const testPackSelect = document.querySelector("#test-pack-select");
+const testPackSummary = document.querySelector("#test-pack-summary");
+const startTestButton = document.querySelector("#start-test-button");
+const testsDiagnostic = document.querySelector("#tests-diagnostic");
+const testTitle = document.querySelector("#test-title");
+const testProgress = document.querySelector("#test-progress");
+const testForm = document.querySelector("#test-form");
+const scoreTestButton = document.querySelector("#score-test-button");
+const resetTestButton = document.querySelector("#reset-test-button");
+const testsReport = document.querySelector("#tests-report");
+const testsScoreValue = document.querySelector("#tests-score-value");
+const testsScoreLabel = document.querySelector("#tests-score-label");
+const testsScoreCopy = document.querySelector("#tests-score-copy");
+const testsFeedbackList = document.querySelector("#tests-feedback-list");
+const retakeTestButton = document.querySelector("#retake-test-button");
+const mockInterviewButton = document.querySelector("#mock-interview-button");
 
 let currentFormStep = 1;
 let currentFormType = "cv";
@@ -328,6 +344,7 @@ const translations = {
     "Pricing": "Preise",
     "About": "Uber uns",
     "FAQ": "FAQ",
+    "Tests": "Tests",
     "Contact": "Kontakt",
     "Submit My CV": "Lebenslauf einreichen",
     "I want to Intern": "Ich mochte ein Praktikum",
@@ -393,6 +410,7 @@ const translations = {
     "Contact us": "Kontaktieren Sie uns",
     "Let's start a conversation.": "Lassen Sie uns sprechen.",
     "Whether you are hiring or looking for a career-defining role, our team is here to help.": "Ob Sie einstellen oder eine karrierepragende Rolle suchen, unser Team hilft Ihnen gerne.",
+    "Based in Fuengirola, Spain, UrgentRecruite provides remote-first recruitment support for organizations and candidates across Spain, Nigeria, Portugal, Germany, Kenya and global markets.": "Mit Sitz in Fuengirola, Spanien, bietet UrgentRecruite Remote-First-Recruiting-Support fur Unternehmen und Kandidaten in Spanien, Nigeria, Portugal, Deutschland, Kenia und globalen Markten.",
     "Request Callback": "Ruckruf anfordern",
     "The right people, exactly when you need them.": "Die richtigen Menschen, genau dann, wenn Sie sie brauchen.",
     "UrgentRecruite helps organizations receive vetted anonymous shortlists, while helping candidates and interns find roles that match their experience and ambition.": "UrgentRecruite hilft Unternehmen, geprufte anonyme Shortlists zu erhalten, und hilft Kandidaten sowie Praktikanten, passende Rollen zu finden.",
@@ -406,6 +424,7 @@ const translations = {
     "About Us": "Uber uns",
     "Major market areas": "Wichtige Marktgebiete",
     "Accessible worldwide, with focused support in these markets.": "Weltweit erreichbar, mit fokussiertem Support in diesen Markten.",
+    "Based in Fuengirola, Spain. Serving clients and candidates across Spain, Nigeria, Portugal, Germany, Kenya and worldwide.": "Mit Sitz in Fuengirola, Spanien. Wir betreuen Kunden und Kandidaten in Spanien, Nigeria, Portugal, Deutschland, Kenia und weltweit.",
     "100% Data Protection Compliant": "100% datenschutzkonform",
     "Connect": "Verbinden",
     "Privacy Policy": "Datenschutzerklarung",
@@ -463,6 +482,7 @@ const translations = {
     "Pricing": "Precios",
     "About": "Sobre nosotros",
     "FAQ": "FAQ",
+    "Tests": "Tests",
     "Contact": "Contacto",
     "Submit My CV": "Enviar mi CV",
     "I want to Intern": "Quiero hacer practicas",
@@ -528,6 +548,7 @@ const translations = {
     "Contact us": "Contactenos",
     "Let's start a conversation.": "Empecemos una conversacion.",
     "Whether you are hiring or looking for a career-defining role, our team is here to help.": "Si esta contratando o buscando una oportunidad clave, nuestro equipo puede ayudar.",
+    "Based in Fuengirola, Spain, UrgentRecruite provides remote-first recruitment support for organizations and candidates across Spain, Nigeria, Portugal, Germany, Kenya and global markets.": "Con sede en Fuengirola, Espana, UrgentRecruite ofrece soporte de reclutamiento remoto para organizaciones y candidatos en Espana, Nigeria, Portugal, Alemania, Kenia y mercados globales.",
     "Request Callback": "Solicitar llamada",
     "The right people, exactly when you need them.": "Las personas adecuadas, justo cuando las necesitas.",
     "UrgentRecruite helps organizations receive vetted anonymous shortlists, while helping candidates and interns find roles that match their experience and ambition.": "UrgentRecruite ayuda a las organizaciones a recibir shortlists anonimas verificadas, y ayuda a candidatos y practicantes a encontrar roles alineados con su experiencia y ambicion.",
@@ -541,6 +562,7 @@ const translations = {
     "About Us": "Sobre nosotros",
     "Major market areas": "Principales mercados",
     "Accessible worldwide, with focused support in these markets.": "Accesible a nivel mundial, con soporte enfocado en estos mercados.",
+    "Based in Fuengirola, Spain. Serving clients and candidates across Spain, Nigeria, Portugal, Germany, Kenya and worldwide.": "Con sede en Fuengirola, Espana. Atendemos a clientes y candidatos en Espana, Nigeria, Portugal, Alemania, Kenia y todo el mundo.",
     "100% Data Protection Compliant": "100% conforme con proteccion de datos",
     "Connect": "Conectar",
     "Privacy Policy": "Politica de privacidad",
@@ -598,6 +620,7 @@ const translations = {
     "Pricing": "Precos",
     "About": "Sobre",
     "FAQ": "FAQ",
+    "Tests": "Testes",
     "Contact": "Contacto",
     "Submit My CV": "Enviar o meu CV",
     "I want to Intern": "Quero estagiar",
@@ -663,6 +686,7 @@ const translations = {
     "Contact us": "Contacte-nos",
     "Let's start a conversation.": "Vamos conversar.",
     "Whether you are hiring or looking for a career-defining role, our team is here to help.": "Quer esteja a contratar ou a procurar uma oportunidade marcante, a nossa equipa pode ajudar.",
+    "Based in Fuengirola, Spain, UrgentRecruite provides remote-first recruitment support for organizations and candidates across Spain, Nigeria, Portugal, Germany, Kenya and global markets.": "Com sede em Fuengirola, Espanha, a UrgentRecruite oferece apoio de recrutamento remoto para organizacoes e candidatos em Espanha, Nigeria, Portugal, Alemanha, Quenia e mercados globais.",
     "Request Callback": "Pedir contacto",
     "The right people, exactly when you need them.": "As pessoas certas, exatamente quando precisa delas.",
     "UrgentRecruite helps organizations receive vetted anonymous shortlists, while helping candidates and interns find roles that match their experience and ambition.": "A UrgentRecruite ajuda organizacoes a receber shortlists anonimas verificadas, enquanto ajuda candidatos e estagiarios a encontrar funcoes alinhadas com experiencia e ambicao.",
@@ -676,6 +700,7 @@ const translations = {
     "About Us": "Sobre nos",
     "Major market areas": "Principais mercados",
     "Accessible worldwide, with focused support in these markets.": "Acessivel mundialmente, com apoio focado nestes mercados.",
+    "Based in Fuengirola, Spain. Serving clients and candidates across Spain, Nigeria, Portugal, Germany, Kenya and worldwide.": "Com sede em Fuengirola, Espanha. Servimos clientes e candidatos em Espanha, Nigeria, Portugal, Alemanha, Quenia e em todo o mundo.",
     "100% Data Protection Compliant": "100% conforme com protecao de dados",
     "Connect": "Ligar",
     "Privacy Policy": "Politica de privacidade",
@@ -733,6 +758,7 @@ const translations = {
     "Pricing": "Tarifs",
     "About": "A propos",
     "FAQ": "FAQ",
+    "Tests": "Tests",
     "Contact": "Contact",
     "Submit My CV": "Envoyer mon CV",
     "I want to Intern": "Je veux un stage",
@@ -798,6 +824,7 @@ const translations = {
     "Contact us": "Contactez-nous",
     "Let's start a conversation.": "Commencons une conversation.",
     "Whether you are hiring or looking for a career-defining role, our team is here to help.": "Que vous recrutiez ou cherchiez un role determinant, notre equipe est la pour vous aider.",
+    "Based in Fuengirola, Spain, UrgentRecruite provides remote-first recruitment support for organizations and candidates across Spain, Nigeria, Portugal, Germany, Kenya and global markets.": "Basee a Fuengirola, Espagne, UrgentRecruite fournit un support de recrutement remote-first aux organisations et candidats en Espagne, au Nigeria, au Portugal, en Allemagne, au Kenya et sur les marches mondiaux.",
     "Request Callback": "Demander un rappel",
     "The right people, exactly when you need them.": "Les bonnes personnes, exactement quand vous en avez besoin.",
     "UrgentRecruite helps organizations receive vetted anonymous shortlists, while helping candidates and interns find roles that match their experience and ambition.": "UrgentRecruite aide les organisations a recevoir des shortlists anonymes verifiees, tout en aidant les candidats et stagiaires a trouver des roles alignes avec leur experience et leur ambition.",
@@ -811,6 +838,7 @@ const translations = {
     "About Us": "A propos",
     "Major market areas": "Principales zones de marche",
     "Accessible worldwide, with focused support in these markets.": "Accessible dans le monde entier, avec un support cible dans ces marches.",
+    "Based in Fuengirola, Spain. Serving clients and candidates across Spain, Nigeria, Portugal, Germany, Kenya and worldwide.": "Basee a Fuengirola, Espagne. Nous accompagnons clients et candidats en Espagne, au Nigeria, au Portugal, en Allemagne, au Kenya et dans le monde entier.",
     "100% Data Protection Compliant": "100% conforme a la protection des donnees",
     "Connect": "Connecter",
     "Privacy Policy": "Politique de confidentialite",
@@ -1662,6 +1690,34 @@ function getSubmissionEmail(payload) {
   return String(payload.workEmail || payload.email || "").trim().toLowerCase();
 }
 
+function normalizeContactPhone(value) {
+  return String(value || "").replace(/[\s().-]/g, "");
+}
+
+function validateContactDetails(form, payload) {
+  const emailInput = form.elements.email;
+  const phoneInput = form.elements.phone;
+  const email = String(payload.email || "").trim();
+  const phone = normalizeContactPhone(payload.phone);
+
+  emailInput.setCustomValidity(/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)
+    ? ""
+    : "Please enter a valid email address.");
+  phoneInput.setCustomValidity(/^\+[1-9]\d{7,14}$/.test(phone)
+    ? ""
+    : "Please enter a valid international phone number, for example +441234567890.");
+
+  if (!form.reportValidity()) return false;
+
+  payload.email = email.toLowerCase();
+  payload.phone = phone;
+  return true;
+}
+
+document.querySelectorAll("#contact-form input[name='email'], #contact-form input[name='phone']").forEach((input) => {
+  input.addEventListener("input", () => input.setCustomValidity(""));
+});
+
 function getSubmissionRateType(source) {
   if (source === "intent") return "intern";
   if (source === "cv") return "cv";
@@ -1792,6 +1848,499 @@ async function saveContactToSupabase(payload) {
   return true;
 }
 
+const readinessPacks = [
+  {
+    id: "it-support",
+    industry: "IT & Digital",
+    role: "IT Support Specialist",
+    level: "Professional",
+    summary: "A balanced pack for candidates preparing for service desk, IT support, and technical support interviews.",
+    competencies: ["Troubleshooting", "Customer support", "Security awareness", "Prioritisation", "Communication"],
+    questions: [
+      {
+        type: "Practical scenario",
+        competency: "Troubleshooting",
+        text: "A user says their laptop connects to Wi-Fi but cannot open any website. Other users are working normally. What is the best first action?",
+        options: [
+          "Reinstall the wireless driver immediately.",
+          "Check the user's IP/DNS settings and try a known website before escalating.",
+          "Tell the user to wait because the network is probably down.",
+          "Replace the laptop because the browser is not responding."
+        ],
+        answer: 1,
+        feedback: "Good support starts with targeted diagnosis before costly or disruptive actions."
+      },
+      {
+        type: "Workplace judgement",
+        competency: "Security awareness",
+        text: "A senior manager asks you to reset a colleague's password because the colleague is travelling. What should you do?",
+        options: [
+          "Reset it because the request came from a senior manager.",
+          "Share a temporary password with the manager by email.",
+          "Follow identity verification and password reset policy before taking action.",
+          "Ignore the request because password resets are never allowed."
+        ],
+        answer: 2,
+        feedback: "Identity and access procedures protect both the user and the organization."
+      },
+      {
+        type: "Aptitude",
+        competency: "Prioritisation",
+        text: "You receive four tickets: CEO cannot join a board meeting, one user wants a new mouse, ten users cannot access email, and a printer is low on toner. Which should be handled first?",
+        options: [
+          "The new mouse request.",
+          "The printer toner issue.",
+          "The email outage affecting ten users.",
+          "Whichever ticket arrived first."
+        ],
+        answer: 2,
+        feedback: "Impact and urgency should guide triage."
+      },
+      {
+        type: "Job knowledge",
+        competency: "Technical fundamentals",
+        text: "Which tool is most directly used to test whether a device can reach another device over the network?",
+        options: ["ping", "format", "defrag", "rename"],
+        answer: 0,
+        feedback: "Ping is a basic connectivity test used in early network diagnosis."
+      },
+      {
+        type: "Interview readiness",
+        competency: "Communication",
+        text: "In an interview, how should you describe a time you solved a difficult technical issue?",
+        options: [
+          "Focus only on the tool you used.",
+          "Use situation, task, action, and result, including how you communicated with the user.",
+          "Say the issue was too complex to explain.",
+          "Avoid examples because support work is confidential."
+        ],
+        answer: 1,
+        feedback: "Structured answers show both technical ability and service maturity."
+      }
+    ]
+  },
+  {
+    id: "bank-manager",
+    industry: "Banking & Finance",
+    role: "Retail Bank Manager",
+    level: "Mid Management",
+    summary: "A management-readiness pack focused on branch operations, customer escalation, compliance judgement, and team leadership.",
+    competencies: ["Compliance", "Customer escalation", "Leadership", "Commercial reasoning", "Ethics"],
+    questions: [
+      {
+        type: "Workplace judgement",
+        competency: "Compliance",
+        text: "An influential customer asks you to override a declined loan decision because they know senior leadership. What is the strongest response?",
+        options: [
+          "Override it to preserve the relationship.",
+          "Review the process, explain the decision professionally, and escalate only within policy.",
+          "Ask a junior employee to approve it instead.",
+          "Tell the customer the bank never reviews decisions."
+        ],
+        answer: 1,
+        feedback: "Strong branch leadership balances customer care with compliance."
+      },
+      {
+        type: "Aptitude",
+        competency: "Commercial reasoning",
+        text: "A branch target is 120 new accounts per month. By day 20, the team has opened 72 accounts. If performance continues at the same pace, what is the likely monthly result over 30 days?",
+        options: ["96", "108", "120", "144"],
+        answer: 1,
+        feedback: "72 accounts in 20 days equals 3.6 per day; over 30 days that is 108."
+      },
+      {
+        type: "Simulation",
+        competency: "Team leadership",
+        text: "Two high-performing staff members are arguing in front of customers. What should you do first?",
+        options: [
+          "Address the behaviour privately and restore service coverage immediately.",
+          "Ignore it because both staff members perform well.",
+          "Send both home without understanding the situation.",
+          "Discuss their disagreement in the banking hall."
+        ],
+        answer: 0,
+        feedback: "Managers must protect customer experience while handling conflict professionally."
+      },
+      {
+        type: "Job knowledge",
+        competency: "Risk awareness",
+        text: "Which behaviour is most likely to raise anti-money-laundering concern?",
+        options: [
+          "A customer updates their phone number.",
+          "A customer asks for account statements.",
+          "A customer repeatedly deposits cash just below reporting thresholds.",
+          "A customer requests a debit card replacement."
+        ],
+        answer: 2,
+        feedback: "Structuring deposits to avoid thresholds is a classic red flag."
+      },
+      {
+        type: "Interview readiness",
+        competency: "Leadership communication",
+        text: "When asked about branch performance improvement, what answer is strongest?",
+        options: [
+          "I pushed the team harder until numbers improved.",
+          "I reviewed data, identified conversion gaps, coached staff, and tracked improvement.",
+          "Performance is mostly controlled by head office.",
+          "I avoid discussing figures in interviews."
+        ],
+        answer: 1,
+        feedback: "Employers listen for diagnosis, action, people leadership, and measurable result."
+      }
+    ]
+  },
+  {
+    id: "registered-nurse",
+    industry: "Healthcare",
+    role: "Registered Nurse",
+    level: "Professional",
+    summary: "A readiness pack for nursing candidates focused on prioritisation, patient communication, safety, ethics, and interview clarity.",
+    competencies: ["Patient safety", "Prioritisation", "Ethics", "Communication", "Documentation"],
+    questions: [
+      {
+        type: "Simulation",
+        competency: "Prioritisation",
+        text: "Four patients need attention: one has sudden chest pain, one needs routine medication, one asks for water, and one has a discharge question. Who should be assessed first?",
+        options: [
+          "The patient asking for water.",
+          "The patient with sudden chest pain.",
+          "The patient with a discharge question.",
+          "The patient due routine medication."
+        ],
+        answer: 1,
+        feedback: "Sudden chest pain may indicate urgent deterioration and requires immediate assessment."
+      },
+      {
+        type: "Workplace judgement",
+        competency: "Ethics",
+        text: "A family member asks for confidential details about an adult patient who has not given consent. What should you do?",
+        options: [
+          "Share the details because they are family.",
+          "Check consent and follow confidentiality policy.",
+          "Refuse to speak to the family at all.",
+          "Ask another patient what they think."
+        ],
+        answer: 1,
+        feedback: "Confidentiality and consent are central to safe patient care."
+      },
+      {
+        type: "Job knowledge",
+        competency: "Documentation",
+        text: "What makes a clinical note strongest?",
+        options: [
+          "Clear, timely, factual observations and actions taken.",
+          "Personal opinions about the patient.",
+          "Only positive information.",
+          "A note written at the end of the week."
+        ],
+        answer: 0,
+        feedback: "Safe documentation is timely, factual, and action-focused."
+      },
+      {
+        type: "Aptitude",
+        competency: "Attention to detail",
+        text: "A medication is prescribed every 8 hours. If the first dose is given at 06:00, when is the third dose due?",
+        options: ["12:00", "14:00", "18:00", "22:00"],
+        answer: 3,
+        feedback: "Dose one is 06:00, dose two is 14:00, and dose three is 22:00."
+      },
+      {
+        type: "Interview readiness",
+        competency: "Communication",
+        text: "What is the best way to answer a question about handling a distressed patient?",
+        options: [
+          "Say you are naturally caring and leave it there.",
+          "Describe how you listened, assessed risk, reassured, escalated if needed, and documented.",
+          "Say distressed patients should wait for doctors.",
+          "Avoid examples to protect confidentiality."
+        ],
+        answer: 1,
+        feedback: "A strong nursing interview answer shows empathy, safety, escalation, and accountability."
+      }
+    ]
+  },
+  {
+    id: "project-engineer",
+    industry: "Engineering",
+    role: "Project Engineer",
+    level: "Professional",
+    summary: "A project-readiness pack for engineering candidates covering safety, planning, stakeholder updates, risk, and practical judgement.",
+    competencies: ["Safety", "Planning", "Risk management", "Technical judgement", "Reporting"],
+    questions: [
+      {
+        type: "Workplace judgement",
+        competency: "Safety",
+        text: "A subcontractor wants to continue work after a missing safety guard is discovered because the deadline is tight. What should you do?",
+        options: [
+          "Allow work to continue and document it later.",
+          "Stop the unsafe activity and follow the safety escalation process.",
+          "Ask the subcontractor to decide.",
+          "Move the work to a less visible area."
+        ],
+        answer: 1,
+        feedback: "Safety controls are not optional, even under schedule pressure."
+      },
+      {
+        type: "Aptitude",
+        competency: "Planning",
+        text: "A task takes 6 hours per unit. The team must complete 8 units. With 4 engineers working equally, how many hours of work are needed per engineer?",
+        options: ["8", "10", "12", "16"],
+        answer: 2,
+        feedback: "Total work is 48 hours; divided by 4 engineers equals 12 hours each."
+      },
+      {
+        type: "Simulation",
+        competency: "Risk management",
+        text: "A supplier delay threatens a key milestone. What is the best first response?",
+        options: [
+          "Wait until the deadline is missed.",
+          "Assess impact, identify alternatives, update stakeholders, and revise the plan.",
+          "Blame procurement in the next meeting.",
+          "Remove the milestone from the report."
+        ],
+        answer: 1,
+        feedback: "Project engineers are expected to quantify risk and communicate early."
+      },
+      {
+        type: "Job knowledge",
+        competency: "Technical judgement",
+        text: "Why is a method statement important before high-risk work?",
+        options: [
+          "It replaces supervision.",
+          "It describes the safe system of work and planned controls.",
+          "It is only needed after an incident.",
+          "It is mainly for marketing."
+        ],
+        answer: 1,
+        feedback: "Method statements help teams understand the planned safe approach."
+      },
+      {
+        type: "Interview readiness",
+        competency: "Reporting",
+        text: "When asked about a project problem you solved, what should your answer include?",
+        options: [
+          "Only the final result.",
+          "Context, constraints, options considered, action taken, stakeholder update, and result.",
+          "A complaint about the client.",
+          "Technical jargon without business impact."
+        ],
+        answer: 1,
+        feedback: "Strong engineering candidates connect technical action with delivery impact."
+      }
+    ]
+  },
+  {
+    id: "hotel-front-office",
+    industry: "Hospitality",
+    role: "Hotel Front Office Supervisor",
+    level: "Supervisory",
+    summary: "A hospitality readiness pack covering guest recovery, shift coordination, service judgement, numeracy, and interview confidence.",
+    competencies: ["Guest experience", "Service recovery", "Shift coordination", "Commercial awareness", "Communication"],
+    questions: [
+      {
+        type: "Workplace judgement",
+        competency: "Service recovery",
+        text: "A guest arrives and their prepaid room is not available due to an overbooking error. What is the best response?",
+        options: [
+          "Tell the guest there is nothing you can do.",
+          "Apologise, take ownership, offer a practical solution, and escalate according to policy.",
+          "Blame the booking system.",
+          "Ask the guest to call the website they used."
+        ],
+        answer: 1,
+        feedback: "Hospitality supervisors must recover service quickly and professionally."
+      },
+      {
+        type: "Aptitude",
+        competency: "Commercial awareness",
+        text: "A hotel has 80 rooms and 68 are occupied. What is the occupancy rate?",
+        options: ["68%", "75%", "80%", "85%"],
+        answer: 3,
+        feedback: "68 divided by 80 equals 0.85, or 85%."
+      },
+      {
+        type: "Simulation",
+        competency: "Shift coordination",
+        text: "Two receptionists call in sick before a busy checkout period. What should you do first?",
+        options: [
+          "Review demand, reassign trained staff, inform management, and prioritise guest-facing coverage.",
+          "Close reception until later.",
+          "Ask housekeeping to handle all payments without training.",
+          "Cancel checkouts."
+        ],
+        answer: 0,
+        feedback: "Supervisors need to protect service continuity while escalating resource gaps."
+      },
+      {
+        type: "Job knowledge",
+        competency: "Guest experience",
+        text: "Which metric is most directly linked to guest satisfaction after a stay?",
+        options: [
+          "Guest review score or satisfaction survey result.",
+          "Number of staff uniforms ordered.",
+          "Office stationery usage.",
+          "Kitchen stock count only."
+        ],
+        answer: 0,
+        feedback: "Guest reviews and satisfaction surveys are direct signals of experience quality."
+      },
+      {
+        type: "Interview readiness",
+        competency: "Communication",
+        text: "How should you answer a question about an angry guest?",
+        options: [
+          "Say you never get angry guests.",
+          "Describe how you listened, acknowledged the issue, acted within policy, followed up, and learned from it.",
+          "Say security handles all complaints.",
+          "Focus only on how difficult the guest was."
+        ],
+        answer: 1,
+        feedback: "A strong answer shows calm, ownership, policy awareness, and service recovery."
+      }
+    ]
+  }
+];
+
+let activeReadinessPack = readinessPacks[0];
+
+function getPackLabel(pack) {
+  return `${pack.industry} - ${pack.role} (${pack.level})`;
+}
+
+function getSelectedPack() {
+  return readinessPacks.find((pack) => pack.id === testPackSelect?.value) || readinessPacks[0];
+}
+
+function renderPackSummary() {
+  if (!testPackSummary || !testPackSelect) return;
+  const pack = getSelectedPack();
+  testPackSummary.innerHTML = `<strong>${pack.role}</strong><br>${pack.summary}<br><small>Competencies: ${pack.competencies.join(", ")}</small>`;
+}
+
+function populateReadinessPacks() {
+  if (!testPackSelect) return;
+  testPackSelect.innerHTML = readinessPacks.map((pack) => `<option value="${pack.id}">${getPackLabel(pack)}</option>`).join("");
+  renderPackSummary();
+}
+
+function renderReadinessQuestions(pack) {
+  if (!testForm || !testTitle || !testProgress) return;
+  testTitle.textContent = getPackLabel(pack);
+  testProgress.textContent = `Question 1-${pack.questions.length} of ${pack.questions.length}`;
+  testForm.innerHTML = pack.questions.map((question, questionIndex) => {
+    const options = question.options.map((option, optionIndex) => `
+      <label>
+        <input type="radio" name="question-${questionIndex}" value="${optionIndex}" required>
+        <span>${option}</span>
+      </label>
+    `).join("");
+
+    return `
+      <fieldset class="tests-question">
+        <div class="tests-question-meta">
+          <span>${question.type}</span>
+          <span>${question.competency}</span>
+        </div>
+        <h4>${questionIndex + 1}. ${question.text}</h4>
+        <div class="tests-options">${options}</div>
+      </fieldset>
+    `;
+  }).join("");
+}
+
+function startReadinessCheck() {
+  activeReadinessPack = getSelectedPack();
+  renderReadinessQuestions(activeReadinessPack);
+  if (testsDiagnostic) testsDiagnostic.hidden = false;
+  if (testsReport) testsReport.hidden = true;
+  testsDiagnostic?.scrollIntoView({ behavior: "smooth", block: "start" });
+  trackAnalyticsEvent("readiness_test_started", {
+    pack: activeReadinessPack.id,
+    industry: activeReadinessPack.industry,
+    role: activeReadinessPack.role
+  });
+}
+
+function getReadinessLabel(score) {
+  if (score >= 80) return "Interview-ready";
+  if (score >= 60) return "Nearly ready";
+  if (score >= 40) return "Developing readiness";
+  return "Needs focused preparation";
+}
+
+function getReadinessCopy(score, pack) {
+  if (score >= 80) {
+    return `Strong result for ${pack.role}. You appear ready for a realistic interview conversation, with final polishing recommended.`;
+  }
+  if (score >= 60) {
+    return `Good foundation for ${pack.role}. Focus on the missed competency areas before the real assessment.`;
+  }
+  if (score >= 40) {
+    return `You have useful starting points, but this role pack shows preparation gaps that should be worked on before interview day.`;
+  }
+  return `This result suggests you should complete guided practice before taking a formal assessment or interview for this role.`;
+}
+
+function scoreReadinessCheck() {
+  if (!testForm || !activeReadinessPack) return;
+  const answers = activeReadinessPack.questions.map((_, index) => {
+    return testForm.querySelector(`input[name="question-${index}"]:checked`);
+  });
+
+  if (answers.some((answer) => !answer)) {
+    showToast("Please answer every readiness question before generating your report.");
+    return;
+  }
+
+  const correctItems = [];
+  const missedItems = [];
+  answers.forEach((answer, index) => {
+    const question = activeReadinessPack.questions[index];
+    const isCorrect = Number(answer.value) === question.answer;
+    (isCorrect ? correctItems : missedItems).push(question);
+  });
+
+  const score = Math.round((correctItems.length / activeReadinessPack.questions.length) * 100);
+  if (testsScoreValue) testsScoreValue.textContent = `${score}%`;
+  if (testsScoreLabel) testsScoreLabel.textContent = getReadinessLabel(score);
+  if (testsScoreCopy) testsScoreCopy.textContent = getReadinessCopy(score, activeReadinessPack);
+
+  if (testsFeedbackList) {
+    const feedbackItems = missedItems.length ? missedItems : correctItems.slice(0, 3);
+    testsFeedbackList.innerHTML = feedbackItems.map((question) => {
+      const prefix = missedItems.length ? `Improve ${question.competency}` : `Strength: ${question.competency}`;
+      return `<li><strong>${prefix}.</strong> ${question.feedback}</li>`;
+    }).join("");
+  }
+
+  if (testsReport) testsReport.hidden = false;
+  testsReport?.scrollIntoView({ behavior: "smooth", block: "start" });
+  trackAnalyticsEvent("readiness_test_completed", {
+    pack: activeReadinessPack.id,
+    score
+  });
+}
+
+function resetReadinessCheck() {
+  if (testsDiagnostic) testsDiagnostic.hidden = true;
+  if (testsReport) testsReport.hidden = true;
+  document.querySelector("#tests")?.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function requestMockInterviewSession() {
+  const contactSection = document.querySelector("#contact");
+  const contactForm = document.querySelector("#contact-form");
+  const messageField = contactForm?.querySelector("textarea[name='message']");
+  if (messageField && activeReadinessPack) {
+    messageField.value = `I would like to request a low-cost pre-interview session with the UrgentRecruite team. Target: ${activeReadinessPack.industry} - ${activeReadinessPack.role} (${activeReadinessPack.level}). Please contact me with the process and next steps.`;
+  }
+  contactSection?.scrollIntoView({ behavior: "smooth", block: "start" });
+  messageField?.focus({ preventScroll: true });
+  trackAnalyticsEvent("mock_interview_request_click", {
+    pack: activeReadinessPack?.id || "unknown"
+  });
+}
+
 document.querySelectorAll("[data-form]").forEach((button) => {
   button.addEventListener("click", () => {
     trackAnalyticsEvent("cta_click", {
@@ -1832,6 +2381,13 @@ menuButton.addEventListener("click", () => {
 document.querySelectorAll(".nav-links a").forEach((link) => {
   link.addEventListener("click", () => updateMenuState(false));
 });
+
+testPackSelect?.addEventListener("change", renderPackSummary);
+startTestButton?.addEventListener("click", startReadinessCheck);
+scoreTestButton?.addEventListener("click", scoreReadinessCheck);
+resetTestButton?.addEventListener("click", resetReadinessCheck);
+retakeTestButton?.addEventListener("click", startReadinessCheck);
+mockInterviewButton?.addEventListener("click", requestMockInterviewSession);
 
 generateBriefButton.addEventListener("click", () => {
   trackAnalyticsEvent("cta_click", {
@@ -1905,6 +2461,9 @@ document.querySelector("#contact-form").addEventListener("submit", async (event)
   event.preventDefault();
   const form = event.currentTarget;
   const payload = { ...toPayload(form), source: "contact" };
+
+  if (!validateContactDetails(form, payload)) return;
+
   const submitterEmail = getSubmissionEmail(payload);
 
   if (!canSubmitToday("contact", submitterEmail)) {
@@ -1937,6 +2496,7 @@ document.querySelector("#contact-form").addEventListener("submit", async (event)
 });
 
 const savedLanguage = window.localStorage.getItem("urgentRecruiteLanguage") || "en";
+populateReadinessPacks();
 languageSelect.value = savedLanguage;
 setLanguage(savedLanguage);
 updateCurrencyForCountry();

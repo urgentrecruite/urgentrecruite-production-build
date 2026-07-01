@@ -3,8 +3,8 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="UrgentRecruite helps organizations request vetted anonymous candidate shortlists, free intern shortlists, CV screening, and discreet recruitment support across key markets.">
-    <meta name="keywords" content="UrgentRecruite, urgent recruitment, candidate shortlist, anonymous shortlist, vetted candidates, CV screening, intern shortlist, recruitment Nigeria, recruitment Spain, recruitment Portugal, recruitment Germany, recruitment Kenya">
+    <meta name="description" content="UrgentRecruite is a Fuengirola-based, remote-first recruitment platform helping organizations in Spain, Nigeria, Portugal, Germany, Kenya and global markets access vetted candidate shortlists, CV screening and interview readiness support.">
+    <meta name="keywords" content="UrgentRecruite, Fuengirola recruitment, recruitment Spain, remote recruitment support, urgent recruitment, candidate shortlist, anonymous shortlist, vetted candidates, CV screening, interview readiness, intern shortlist, recruitment Nigeria, recruitment Portugal, recruitment Germany, recruitment Kenya">
     <meta name="author" content="UrgentRecruite">
     <meta name="robots" content="index, follow, max-image-preview:large">
     <meta name="theme-color" content="#ffffff">
@@ -34,14 +34,21 @@
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
-        "@type": "Organization",
+        "@type": ["Organization", "EmploymentAgency"],
         "name": "UrgentRecruite",
         "url": "https://www.urgentrecruite.com/",
         "logo": "https://www.urgentrecruite.com/assets/favicon-512x512.png",
         "image": "https://www.urgentrecruite.com/assets/og-image.png",
         "slogan": "The right people, exactly when you need them.",
-        "description": "UrgentRecruite provides vetted anonymous candidate shortlists, intern shortlists, CV screening, and discreet recruitment support.",
-        "areaServed": ["Nigeria", "Spain", "Portugal", "Germany", "Kenya"],
+        "description": "UrgentRecruite is a Fuengirola-based, remote-first recruitment platform providing vetted anonymous candidate shortlists, intern shortlists, CV screening, interview readiness support, and discreet recruitment support.",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Fuengirola",
+          "addressRegion": "Malaga, Andalusia",
+          "addressCountry": "ES"
+        },
+        "areaServed": ["Fuengirola", "Malaga", "Spain", "Nigeria", "Portugal", "Germany", "Kenya", "Worldwide"],
+        "knowsAbout": ["Recruitment", "Candidate shortlists", "CV screening", "Interview readiness", "Internship matching", "Remote recruitment support"],
         "sameAs": [
           "https://www.linkedin.com/company/urgentrecruite/",
           "https://instagram.com/urgentrecruite/",
@@ -63,7 +70,7 @@
         <a href="#how-it-works">How it works</a>
         <a href="#pricing">Pricing</a>
         <a href="#about">About</a>
-        <a href="#faq">FAQ</a>
+        <a class="nav-link-new" href="#tests" aria-label="Tests - new">Tests</a>
         <a href="#contact">Contact</a>
       </nav>
       <div class="header-actions">
@@ -251,6 +258,114 @@
         </div>
       </section>
 
+      <section class="section tests-section" id="tests">
+        <div class="section-heading">
+          <p class="eyebrow">UrgentRecruite Tests</p>
+          <h2>Prepare for assessments and interviews before the real day.</h2>
+          <p>Choose a fast-growth industry, select a target role, complete a structured readiness diagnostic, and see where you are strong before requesting a pre-interview session with our recruitment team.</p>
+        </div>
+
+        <div class="tests-hero-grid">
+          <article class="tests-panel tests-intro-card">
+            <span class="tests-badge">Candidate readiness hub</span>
+            <h3>Built around real recruitment signals, not random quiz questions.</h3>
+            <p>Each pack combines aptitude, role knowledge, workplace judgement, practical scenarios, and interview communication so candidates can prepare more intelligently.</p>
+            <div class="tests-pill-row" aria-label="Assessment categories">
+              <span>Aptitude</span>
+              <span>Job knowledge</span>
+              <span>Simulation</span>
+              <span>SJT</span>
+              <span>Interview</span>
+            </div>
+          </article>
+
+          <article class="tests-panel tests-score-preview" aria-label="Readiness score preview">
+            <div class="tests-score-ring">
+              <strong>82</strong>
+              <span>ReadyScore</span>
+            </div>
+            <div>
+              <h3>Readiness report</h3>
+              <p>After the diagnostic, candidates receive a score, competency notes, and a next-step recommendation.</p>
+            </div>
+          </article>
+        </div>
+
+        <div class="tests-builder" aria-label="Assessment readiness diagnostic">
+          <div class="tests-selector">
+            <div>
+              <p class="eyebrow">Step 1</p>
+              <h3>Select your target industry and role</h3>
+              <p>Start with one of the flagship packs. More roles can be added using the same competency blueprint model.</p>
+            </div>
+            <label>Assessment pack
+              <select id="test-pack-select"></select>
+            </label>
+            <div class="tests-pack-summary" id="test-pack-summary" aria-live="polite"></div>
+            <button class="primary-button" type="button" id="start-test-button">Start readiness check</button>
+          </div>
+
+          <div class="tests-diagnostic" id="tests-diagnostic" hidden>
+            <div class="tests-diagnostic-header">
+              <div>
+                <p class="eyebrow">Step 2</p>
+                <h3 id="test-title">Readiness diagnostic</h3>
+              </div>
+              <span id="test-progress">Question 1 of 5</span>
+            </div>
+            <form id="test-form" class="test-form"></form>
+            <div class="tests-diagnostic-actions">
+              <button class="secondary-button" type="button" id="reset-test-button">Choose another pack</button>
+              <button class="primary-button" type="button" id="score-test-button">Get readiness report</button>
+            </div>
+          </div>
+
+          <div class="tests-report" id="tests-report" hidden aria-live="polite">
+            <div>
+              <p class="eyebrow">Step 3</p>
+              <h3>Your readiness report</h3>
+            </div>
+            <div class="tests-report-grid">
+              <div class="tests-score-card">
+                <strong id="tests-score-value">0%</strong>
+                <span id="tests-score-label">Developing readiness</span>
+              </div>
+              <div>
+                <p id="tests-score-copy">Complete the readiness check to receive feedback.</p>
+                <ul class="tests-feedback-list" id="tests-feedback-list"></ul>
+              </div>
+            </div>
+            <div class="tests-report-actions">
+              <button class="secondary-button" type="button" id="retake-test-button">Retake this pack</button>
+              <button class="primary-button" type="button" id="mock-interview-button">Request pre-interview session</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="tests-industries">
+          <article>
+            <span>IT &amp; Digital</span>
+            <p>Service desk, ERP, web development, cybersecurity, support analysis.</p>
+          </article>
+          <article>
+            <span>Banking &amp; Finance</span>
+            <p>Operations, relationship management, compliance, branch leadership.</p>
+          </article>
+          <article>
+            <span>Healthcare</span>
+            <p>Nursing readiness, patient communication, prioritisation, ethics.</p>
+          </article>
+          <article>
+            <span>Engineering</span>
+            <p>Project judgement, safety awareness, technical reasoning, reporting.</p>
+          </article>
+          <article>
+            <span>Hospitality</span>
+            <p>Guest experience, service recovery, shift coordination, operations.</p>
+          </article>
+        </div>
+      </section>
+
       <section class="section" id="faq">
         <div class="section-heading">
           <p class="eyebrow">Support</p>
@@ -284,12 +399,12 @@
         <div>
           <p class="eyebrow">Contact us</p>
           <h2>Let's start a conversation.</h2>
-          <p>Whether you are hiring or looking for a career-defining role, our team is here to help.</p>
+          <p>Based in Fuengirola, Spain, UrgentRecruite provides remote-first recruitment support for organizations and candidates across Spain, Nigeria, Portugal, Germany, Kenya and global markets.</p>
         </div>
         <form class="contact-form" id="contact-form">
           <input name="name" placeholder="Your full name" required>
-          <input name="email" type="email" placeholder="Your company email" required>
-          <input name="phone" placeholder="+44 your phone number">
+          <input name="email" type="email" autocomplete="email" placeholder="Your company email" required>
+          <input name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+441234567890" pattern="\+[1-9][0-9\s().-]{7,20}" title="Use international format, for example +441234567890" required>
           <textarea name="message" placeholder="A short note about your request"></textarea>
           <button class="primary-button" type="submit">Request Callback</button>
         </form>
@@ -321,7 +436,7 @@
           <span><span aria-hidden="true">&#x1F1E9;&#x1F1EA;</span> Germany</span>
           <span><span aria-hidden="true">&#x1F1F0;&#x1F1EA;</span> Kenya</span>
         </div>
-        <p class="market-note">Accessible worldwide, with focused support in these markets.</p>
+        <p class="market-note">Based in Fuengirola, Spain. Serving clients and candidates across Spain, Nigeria, Portugal, Germany, Kenya and worldwide.</p>
         <span class="compliance-note">100% Data Protection Compliant</span>
       </div>
       <div class="footer-column">
