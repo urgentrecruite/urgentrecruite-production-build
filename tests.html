@@ -38,7 +38,7 @@
         <div class="hero-content">
           <p class="eyebrow">UrgentRecruite Tests</p>
           <h1>Prepare for assessments and interviews before the real day.</h1>
-          <p class="hero-copy">Choose an industry-based readiness pack, complete a short diagnostic, and request a pre-interview session with the UrgentRecruite team when you want focused support.</p>
+          <p class="hero-copy">Start with our live IT &amp; Digital readiness diagnostic, then request a pre-interview session with the UrgentRecruite team when you want focused support.</p>
           <div class="hero-actions">
             <a class="primary-button large" href="#readiness-check">Start readiness check</a>
             <a class="secondary-button large" href="#pre-interview">Request pre-interview session</a>
@@ -46,12 +46,12 @@
         </div>
         <div class="hero-panel" aria-label="Assessment readiness model">
           <div>
-            <strong>5</strong>
-            <span>Launch industries</span>
+            <strong>1</strong>
+            <span>Live industry pilot</span>
           </div>
           <div>
-            <strong>25</strong>
-            <span>Starter diagnostic questions</span>
+            <strong>10</strong>
+            <span>IT diagnostic questions</span>
           </div>
           <div>
             <strong>5</strong>
@@ -68,14 +68,14 @@
         <div class="section-heading">
           <p class="eyebrow">Assessment readiness hub</p>
           <h2>Role-based practice, not random quiz noise.</h2>
-          <p>Each pack combines aptitude, role knowledge, workplace judgement, practical scenarios, and interview communication so candidates can prepare more intelligently.</p>
+          <p>The live IT &amp; Digital pack combines aptitude, role knowledge, workplace judgement, practical scenarios, and interview communication. Other industries are marked as upcoming until their question sets are properly built.</p>
         </div>
 
         <div class="tests-hero-grid">
           <article class="tests-panel tests-intro-card">
-            <span class="tests-badge">Candidate readiness hub</span>
+            <span class="tests-badge">Live pilot: IT &amp; Digital</span>
             <h3>Built around real recruitment signals.</h3>
-            <p>Select a flagship role, answer five targeted diagnostic questions, and use the readiness feedback to decide whether you need more preparation or a guided session.</p>
+            <p>Answer ten targeted diagnostic questions for IT support readiness and use the feedback to decide whether you need more preparation or a guided session.</p>
             <div class="tests-pill-row" aria-label="Assessment categories">
               <span>Aptitude</span>
               <span>Job knowledge</span>
@@ -101,10 +101,10 @@
           <div class="tests-selector">
             <div>
               <p class="eyebrow">Step 1</p>
-              <h3>Select your target industry and role</h3>
-              <p>Start with one of the flagship packs. More roles can be added later using the same competency blueprint model.</p>
+              <h3>Start the live IT &amp; Digital pack</h3>
+              <p>This is the first fully active readiness diagnostic. The remaining industries are locked until their packs are professionally completed.</p>
             </div>
-            <label>Assessment pack
+            <label>Live assessment pack
               <select id="test-pack-select"></select>
             </label>
             <div class="tests-pack-summary" id="test-pack-summary" aria-live="polite"></div>
@@ -117,7 +117,7 @@
                 <p class="eyebrow">Step 2</p>
                 <h3 id="test-title">Readiness diagnostic</h3>
               </div>
-              <span id="test-progress">Question 1-5 of 5</span>
+              <span id="test-progress">Question 1-10 of 10</span>
             </div>
             <form id="test-form" class="test-form"></form>
             <div class="tests-diagnostic-actions">
@@ -149,24 +149,29 @@
         </div>
 
         <div class="tests-industries">
-          <article>
+          <article class="tests-industry-live">
             <span>IT &amp; Digital</span>
-            <p>Service desk, ERP, web development, cybersecurity, support analysis.</p>
+            <small>Live now</small>
+            <p>IT support readiness diagnostic with troubleshooting, security, prioritisation and interview communication.</p>
           </article>
-          <article>
+          <article class="tests-industry-locked" aria-disabled="true">
             <span>Banking &amp; Finance</span>
+            <small>Upcoming</small>
             <p>Operations, relationship management, compliance, branch leadership.</p>
           </article>
-          <article>
+          <article class="tests-industry-locked" aria-disabled="true">
             <span>Healthcare</span>
+            <small>Upcoming</small>
             <p>Nursing readiness, patient communication, prioritisation, ethics.</p>
           </article>
-          <article>
+          <article class="tests-industry-locked" aria-disabled="true">
             <span>Engineering</span>
+            <small>Upcoming</small>
             <p>Project judgement, safety awareness, technical reasoning, reporting.</p>
           </article>
-          <article>
+          <article class="tests-industry-locked" aria-disabled="true">
             <span>Hospitality</span>
+            <small>Upcoming</small>
             <p>Guest experience, service recovery, shift coordination, operations.</p>
           </article>
         </div>
@@ -176,7 +181,7 @@
         <div class="section-heading">
           <p class="eyebrow">Pre-interview session</p>
           <h2>Request focused preparation with the UrgentRecruite team.</h2>
-          <p>Share the role, interview stage, deadline and areas where you need support. The request goes directly to our info inbox with the title “Pre-interview request”.</p>
+          <p>Share the role, interview stage, deadline and areas where you need support. The request goes directly to our info inbox with the title "Pre-interview request".</p>
         </div>
         <form class="contact-form pre-interview-form" id="pre-interview-form">
           <input name="name" placeholder="Your full name" required>

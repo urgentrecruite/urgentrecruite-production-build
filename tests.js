@@ -23,13 +23,18 @@ const readinessPacks = [
     role: "IT Support Specialist",
     level: "Professional",
     summary: "A balanced pack for service desk, IT support, and technical support interviews.",
-    competencies: ["Troubleshooting", "Customer support", "Security awareness", "Prioritisation", "Communication"],
+    competencies: ["Troubleshooting", "Customer support", "Security awareness", "Prioritisation", "Technical fundamentals", "Communication"],
     questions: [
       ["Practical scenario", "Troubleshooting", "A user says their laptop connects to Wi-Fi but cannot open any website. Other users are working normally. What is the best first action?", ["Reinstall the wireless driver immediately.", "Check the user's IP/DNS settings and try a known website before escalating.", "Tell the user to wait because the network is probably down.", "Replace the laptop because the browser is not responding."], 1, "Good support starts with targeted diagnosis before costly or disruptive actions."],
       ["Workplace judgement", "Security awareness", "A senior manager asks you to reset a colleague's password because the colleague is travelling. What should you do?", ["Reset it because the request came from a senior manager.", "Share a temporary password with the manager by email.", "Follow identity verification and password reset policy before taking action.", "Ignore the request because password resets are never allowed."], 2, "Identity and access procedures protect both the user and the organization."],
       ["Aptitude", "Prioritisation", "You receive four tickets: CEO cannot join a board meeting, one user wants a new mouse, ten users cannot access email, and a printer is low on toner. Which should be handled first?", ["The new mouse request.", "The printer toner issue.", "The email outage affecting ten users.", "Whichever ticket arrived first."], 2, "Impact and urgency should guide triage."],
       ["Job knowledge", "Technical fundamentals", "Which tool is most directly used to test whether a device can reach another device over the network?", ["ping", "format", "defrag", "rename"], 0, "Ping is a basic connectivity test used in early network diagnosis."],
-      ["Interview readiness", "Communication", "In an interview, how should you describe a time you solved a difficult technical issue?", ["Focus only on the tool you used.", "Use situation, task, action, and result, including how you communicated with the user.", "Say the issue was too complex to explain.", "Avoid examples because support work is confidential."], 1, "Structured answers show both technical ability and service maturity."]
+      ["Interview readiness", "Communication", "In an interview, how should you describe a time you solved a difficult technical issue?", ["Focus only on the tool you used.", "Use situation, task, action, and result, including how you communicated with the user.", "Say the issue was too complex to explain.", "Avoid examples because support work is confidential."], 1, "Structured answers show both technical ability and service maturity."],
+      ["Practical scenario", "User support", "A user says an important file has disappeared from a shared drive. What is the best first response?", ["Restore the whole shared drive immediately.", "Ask clarifying questions, check recent changes/recycle or version history, and confirm the file path.", "Tell the user files cannot disappear.", "Create a new empty file with the same name."], 1, "Good support confirms scope and evidence before taking recovery action."],
+      ["Job knowledge", "Security awareness", "Which action best reduces the risk of account compromise?", ["Using one memorable password everywhere.", "Sharing passwords only with trusted colleagues.", "Using multi-factor authentication with strong unique passwords.", "Writing passwords in a notebook near the desk."], 2, "Strong unique passwords plus MFA are core account-protection controls."],
+      ["Aptitude", "Technical reasoning", "A support queue has 18 tickets. One-third are password resets, six are software install requests, and the rest are network issues. How many are network issues?", ["3", "6", "9", "12"], 1, "One-third of 18 is 6; 18 minus 6 password resets minus 6 installs leaves 6 network issues."],
+      ["Simulation", "Escalation judgement", "You cannot resolve a recurring VPN issue after checking credentials, internet connection, and basic configuration. What should you do next?", ["Keep repeating the same checks.", "Escalate with clear notes, screenshots/logs, affected user details, and steps already tried.", "Close the ticket because VPN issues are difficult.", "Ask the user to buy a new laptop."], 1, "Escalation is stronger when it includes evidence and avoids duplicate troubleshooting."],
+      ["Interview readiness", "Service mindset", "Which interview answer best shows customer-service maturity in IT support?", ["I fix issues quickly and do not spend time explaining.", "I explain the issue in plain language, confirm the user can continue working, and document the fix.", "Users should understand technology before asking for help.", "I only focus on technical tasks, not user experience."], 1, "Recruiters value technical resolution plus calm, user-centred communication."]
     ]
   },
   {
@@ -97,6 +102,8 @@ const readinessPacks = [
   questions: pack.questions.map(([type, competency, text, options, answer, feedback]) => ({ type, competency, text, options, answer, feedback }))
 }));
 
+const livePackIds = new Set(["it-support"]);
+const liveReadinessPacks = readinessPacks.filter((pack) => livePackIds.has(pack.id));
 let activeReadinessPack = readinessPacks[0];
 
 function showToast(message) {
@@ -111,7 +118,7 @@ function getPackLabel(pack) {
 }
 
 function getSelectedPack() {
-  return readinessPacks.find((pack) => pack.id === testPackSelect?.value) || readinessPacks[0];
+  return liveReadinessPacks.find((pack) => pack.id === testPackSelect?.value) || liveReadinessPacks[0];
 }
 
 function syncPreInterviewFields(pack) {
@@ -131,7 +138,7 @@ function renderPackSummary() {
 
 function populateReadinessPacks() {
   if (!testPackSelect) return;
-  testPackSelect.innerHTML = readinessPacks.map((pack) => `<option value="${pack.id}">${getPackLabel(pack)}</option>`).join("");
+  testPackSelect.innerHTML = liveReadinessPacks.map((pack) => `<option value="${pack.id}">${getPackLabel(pack)} - Live</option>`).join("");
   renderPackSummary();
 }
 

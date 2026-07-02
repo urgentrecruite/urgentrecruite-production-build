@@ -748,6 +748,49 @@ h3 {
   font-weight: 900;
 }
 
+.tests-industries small {
+  display: inline-flex;
+  margin-bottom: 10px;
+  border-radius: 999px;
+  padding: 5px 9px;
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.tests-industry-live {
+  border-color: rgba(15, 118, 110, 0.34);
+  background: linear-gradient(135deg, #ffffff, #f0fdfa);
+}
+
+.tests-industry-live small {
+  color: #ffffff;
+  background: var(--green);
+}
+
+.tests-industry-locked {
+  position: relative;
+  opacity: 0.72;
+  background: #f8fafc;
+}
+
+.tests-industry-locked small {
+  color: #64748b;
+  background: #e2e8f0;
+}
+
+.tests-industry-locked::after {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  content: "Locked";
+  color: #64748b;
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
 .tests-page-hero {
   min-height: calc(92vh - 72px);
 }
